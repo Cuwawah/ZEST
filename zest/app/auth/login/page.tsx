@@ -1,23 +1,23 @@
 "use client";
 
-import { useSignIn } from “@clerk/nextjs”;
-import { useState } from “react”;
-import Link from “next/link”;
-import { useRouter } from “next/navigation”;
+import { useSignIn } from "@clerk/nextjs";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
 const { signIn, isLoaded, setActive } = useSignIn();
 const router = useRouter();
-const [email, setEmail] = useState(””);
-const [password, setPassword] = useState(””);
-const [error, setError] = useState(””);
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 
 const handleSubmit = async (e: React.FormEvent) => {
 e.preventDefault();
 if (!isLoaded) return;
 setLoading(true);
-setError(””);
+setError("");
 
 
 try {
