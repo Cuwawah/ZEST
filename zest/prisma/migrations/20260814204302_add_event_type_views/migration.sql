@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "EventType" ADD COLUMN     "views" INTEGER NOT NULL DEFAULT 0;

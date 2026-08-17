@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^22.13.11",
+    "convex": "^1.32.0",
     "styled-jsx": "^5.1.7"
   }
 }

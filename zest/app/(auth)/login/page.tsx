@@ -1,13 +1,14 @@
 "use client";
 
-import { useSignIn } from "@clerk/nextjs";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { login } from "@/app/actions/auth";
 
-export default function LoginPage() {
-const { signIn, isLoaded, setActive } = useSignIn();
+function LoginForm() {
 const router = useRouter();
+const searchParams = useSearchParams();
+const justReset = searchParams.get("reset") === "1";
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [error, setError] = useState("");
@@ -15,28 +16,22 @@ const [loading, setLoading] = useState(false);
 
 const handleSubmit = async (e: React.FormEvent) => {
 e.preventDefault();
-if (!isLoaded) return;
 setLoading(true);
 setError("");
 
-
 try {
-  const result = await signIn.create({
-    identifier: email,
-    password,
-  });
-
-  if (result.status === "complete") {
-    await setActive({ session: result.createdSessionId });
+  const res = await login({ email, password });
+  if (res.error) {
+    setError(res.error);
+  } else {
     router.push("/dashboard");
+    router.refresh();
   }
-} catch (err: any) {
-  setError(err.errors?.[0]?.message ?? "Something went wrong. Try again.");
+} catch (err) {
+  setError(err instanceof Error ? err.message : "Something went wrong. Try again.");
 } finally {
   setLoading(false);
 }
-
-
 };
 
 return (
@@ -79,9 +74,15 @@ return (
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        <Link href="/forgot-password" className="forgot">
+          Forgot password?
+        </Link>
       </div>
 
       {error && <p className="error">{error}</p>}
+      {justReset && (
+        <p className="success">Password reset! Sign in with your new password.</p>
+      )}
 
       <button type="submit" className="btn" disabled={loading}>
         {loading ? <span className="spinner" /> : "Sign in"}
@@ -91,13 +92,12 @@ return (
     <p className="footer-text">
       Don&apos;t have an account?{" "}
       <Link href="/signup" className="link">
-        Get started free
+        Create account
       </Link>
     </p>
   </div>
 
   <style jsx>{`
-    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
 
     :global(body) {
       margin: 0;
@@ -111,7 +111,7 @@ return (
       align-items: center;
       justify-content: center;
       padding: 24px;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
       position: relative;
       overflow: hidden;
     }
@@ -180,7 +180,7 @@ return (
     }
 
     .logo-text {
-      font-family: 'Fraunces', serif;
+      font-family: var(--font-fraunces, 'Fraunces'), serif;
       font-size: 26px;
       font-weight: 600;
       color: #1a1a0f;
@@ -188,7 +188,7 @@ return (
     }
 
     .heading {
-      font-family: 'Fraunces', serif;
+      font-family: var(--font-fraunces, 'Fraunces'), serif;
       font-size: 30px;
       font-weight: 600;
       color: #1a1a0f;
@@ -228,7 +228,7 @@ return (
       border-radius: 12px;
       padding: 13px 16px;
       font-size: 15px;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
       color: #1a1a0f;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -243,6 +243,18 @@ return (
       box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.18);
     }
 
+    .forgot {
+      align-self: flex-end;
+      font-size: 13px;
+      color: #c08b00;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
     .error {
       background: #fff3f0;
       border: 1px solid #ffc5bb;
@@ -250,6 +262,16 @@ return (
       padding: 10px 14px;
       font-size: 13.5px;
       color: #c0391b;
+      margin: 0;
+    }
+
+    .success {
+      background: #f0f7e8;
+      border: 1px solid #c7e2ae;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: #3d6b1e;
       margin: 0;
     }
 
@@ -261,7 +283,7 @@ return (
       padding: 14px;
       font-size: 15px;
       font-weight: 500;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
       cursor: pointer;
       transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
       display: flex;
@@ -327,4 +349,12 @@ return (
 
 
 );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
+  );
 }

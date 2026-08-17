@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  businessName String?
+  slug         String   @unique
+  timezone     String   @default("Africa/Lagos")
+  bufferTime   Int      @default(0)
+  minNotice    Int      @default(24)
+  plan              String   @default("free")
+  trialEndsAt       DateTime?
+  paymentRef        String?
+  paymentAmountKobo Int?
+  planExpiresAt     DateTime?
+  sentReminders     String?
+  renewalNoticeDismissedAt DateTime?
+  phone             String?
+  logoUrl      String?
+  accentColor  String?
+  hideBranding Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  eventTypes        EventType[]
+  paymentMatches    PaymentTransaction[]
+}
+
+model EventType {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  duration    Int
+  slug        String
+  userId      String
+  isActive    Boolean  @default(true)
+  views       Int      @default(0)
+  capacity    Int      @default(1)
+  reminderHours Int    @default(24)
+  createdAt   DateTime @default(now())
+
+  user              User               @relation(fields: [userId], references: [id])
+  availabilityRules AvailabilityRule[]
+  intakeQuestions   IntakeQuestion[]
+  bookings          Booking[]
+
+  @@unique([slug])
+  @@index([userId])
+}
+
+model AvailabilityRule {
+  id          String  @id @default(cuid())
+  eventTypeId String
+  type        String
+  dayOfWeek   Int?
+  date        String?
+  everyNDays  Int?
+  dayOfMonth  Int?
+  startTime   String
+  endTime     String
+  isAvailable Boolean
+
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+
+  @@index([eventTypeId])
+}
+
+model IntakeQuestion {
+  id          String  @id @default(cuid())
+  eventTypeId String
+  order       Int
+  type        String
+  label       String
+  required    Boolean @default(false)
+  options     String?
+
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  responses Response[]
+
+  @@index([eventTypeId])
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  eventTypeId String
+  clientName  String
+  clientEmail String
+  phone       String?
+  startTime   DateTime
+  endTime     DateTime
+  status      String   @default("confirmed")
+  reminderSentAt DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime @default(now())
+
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  responses Response[]
+
+  @@index([eventTypeId])
+}
+
+model Response {
+  id         String        @id @default(cuid())
+  bookingId  String
+  questionId String
+  answer     String
+
+  booking  Booking       @relation(fields: [bookingId], references: [id])
+  question IntakeQuestion @relation(fields: [questionId], references: [id])
+
+  @@index([bookingId])
+  @@index([questionId])
+}
+
+model PaymentTransaction {
+  id            String   @id @default(cuid())
+  messageId     String   @unique
+  sender        String?
+  receivedAt    DateTime?
+  amountKobo    Int?
+  senderName    String?
+  narration     String?
+  rawBody       String?
+  refMatch      String?
+  status        String   @default("parsed")
+  matchedUserId String?
+  matchedUser   User?    @relation(fields: [matchedUserId], references: [id])
+  createdAt     DateTime @default(now())
+
+  @@index([status])
+  @@index([matchedUserId])
+}
