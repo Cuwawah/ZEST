@@ -22,7 +22,7 @@ export default function TermsPage() {
         <h2>2. Subscriptions and payment</h2>
         <p>
           Zest offers a free plan (1 event type) and a paid Pro plan (currently
-          NGN 3,500/month). All new accounts include a 7-day Pro trial. Pro is
+          NGN 4,000/month). All new accounts include a 7-day Pro trial. Pro is
           paid by bank transfer to the account shown on the billing page; access
           is activated once we confirm your payment. You are responsible for the
           accuracy of any payment reference you include when paying.

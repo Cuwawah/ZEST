@@ -34,10 +34,10 @@ assert(r1.parseError === null, "no parse error");
 
 // Credit with explicit NGN and narration
 const cred2 =
-  "John Doe just sent you NGN 3,500.00. Reference: ZEST-ABC123. Love, The Kuda Team.";
+  "John Doe just sent you NGN 4,000.00. Reference: ZEST-ABC123. Love, The Kuda Team.";
 const r2 = parseKudaEmail({ ...base, bodyText: cred2 });
 assert(r2.isCredit === true, "credit variant 2 is credit");
-assert(r2.amountKobo === 350000, "parses NGN 3,500.00 -> 350000 kobo");
+assert(r2.amountKobo === 400000, "parses NGN 4,000.00 -> 400000 kobo");
 assert(r2.narration === "ZEST-ABC123", "extracts narration ref");
 
 // Real debit format
@@ -75,8 +75,8 @@ const r5 = parseKudaEmail({
 });
 assert(r5.isFromKuda === false, "rejects non-kuda sender");
 
-assert(normalizeAmount("3,500") === 350000, "normalize 3,500");
-assert(normalizeAmount("3500.00") === 350000, "normalize 3500.00");
+assert(normalizeAmount("4,000") === 400000, "normalize 4,000");
+assert(normalizeAmount("4000.00") === 400000, "normalize 4000.00");
 assert(normalizeAmount("12.50") === 1250, "normalize 12.50");
 assert(normalizeAmount("0") === null, "reject zero");
 
@@ -91,7 +91,7 @@ assert(r6.parseError === "amount_not_found", "flags missing amount");
 const r7 = parseKudaEmail({
   ...base,
   bodyText:
-    "John Doe just sent you NGN 3,500.00. Reference: user@example.com. Love, The Kuda Team.",
+    "John Doe just sent you NGN 4,000.00. Reference: user@example.com. Love, The Kuda Team.",
 });
 assert(r7.narration === "user@example.com", "parses email narration with @ and .");
 
@@ -99,7 +99,7 @@ assert(r7.narration === "user@example.com", "parses email narration with @ and .
 const r8 = parseKudaEmail({
   ...base,
   bodyText:
-    "John Doe just sent you NGN 3,500.00. Narration: ZEST-AB12CD - subscription. Love, The Kuda Team.",
+    "John Doe just sent you NGN 4,000.00. Narration: ZEST-AB12CD - subscription. Love, The Kuda Team.",
 });
 assert(r8.narration === "ZEST-AB12CD - subscription", "parses ref narration with hyphen and dash");
 

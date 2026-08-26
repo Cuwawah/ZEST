@@ -15,7 +15,7 @@ function makeUser(overrides: Partial<RenewalCandidate> = {}): RenewalCandidate {
     trialEndsAt: null,
     planExpiresAt: new Date(Date.now() + 30 * DAY),
     sentReminders: null,
-    paymentAmountKobo: 354500,
+    paymentAmountKobo: 404500,
     paymentRef: "ZEST-TEST",
     ...overrides,
   };

@@ -101,7 +101,7 @@ export default function Home() {
             <div className="feature-card">
               <div className="feature-icon">🔒</div>
               <h3 className="feature-title">Simple, fair pricing</h3>
-              <p className="feature-desc">Free plan forever. Pro at NGN 3,500/month — paid by bank transfer, no card, no auto-deduction.</p>
+              <p className="feature-desc">Free plan forever. Pro at NGN 4,000/month — paid by bank transfer, no card, no auto-deduction.</p>
             </div>
           </div>
         </div>
@@ -265,7 +265,7 @@ export default function Home() {
             </div>
             <div className="stat-divider" />
             <div className="stat">
-              <div className="stat-number">₦3,500</div>
+              <div className="stat-number">₦4,000</div>
               <div className="stat-label">per month for Pro, no card</div>
             </div>
           </div>
@@ -297,7 +297,7 @@ export default function Home() {
                   <th className="pricing-col-pro">
                     <div className="pricing-badge">Most popular</div>
                     <div className="pricing-col-name">Pro</div>
-                    <div className="pricing-col-price">NGN 3,500</div>
+                    <div className="pricing-col-price">NGN 4,000</div>
                     <div className="pricing-col-period">/month</div>
                     <Link href="/signup" className="pricing-btn premium-btn">
                       Start free trial
@@ -432,7 +432,7 @@ export default function Home() {
               </svg>
             </Link>
             <p className="cta-note">
-              Free forever on the Free plan. Pro is NGN 3,500/month, paid by
+              Free forever on the Free plan. Pro is NGN 4,000/month, paid by
               bank transfer — no card needed, no auto-deduction.
             </p>
           </div>

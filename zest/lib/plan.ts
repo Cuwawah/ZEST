@@ -1,10 +1,10 @@
 export const TRIAL_DAYS = 7;
 export const FREE_EVENT_TYPES_LIMIT = 1;
-export const PRICE = "NGN 3,500";
+export const PRICE = "NGN 4,000";
 export const PRICE_LABEL = `${PRICE}/month`;
-export const PRICE_KOBO = 350000;
+export const PRICE_KOBO = 400000;
 export const UNIQUE_AMOUNT_OFFSET_MIN = 1;
-export const UNIQUE_AMOUNT_OFFSET_MAX = 99;
+export const UNIQUE_AMOUNT_OFFSET_MAX = 499;
 
 export type AccountStatus = "active" | "trial" | "inactive";
 export type Tier = "free" | "pro";

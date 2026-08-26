@@ -30,10 +30,10 @@ assert(
   "generated amounts are whole naira"
 );
 
-assert(formatPaymentAmount(350000) === "₦3,500", "formats whole naira");
-assert(formatPaymentAmount(350100) === "₦3,501", "formats offset naira");
-assert(formatPaymentAmount(359900) === "₦3,599", "formats max offset naira");
-assert(formatPaymentAmount(null) === "NGN 3,500", "formats null fallback");
-assert(formatPaymentAmount(undefined) === "NGN 3,500", "formats undefined fallback");
+assert(formatPaymentAmount(400000) === "₦4,000", "formats whole naira");
+assert(formatPaymentAmount(400100) === "₦4,001", "formats offset naira");
+assert(formatPaymentAmount(449900) === "₦4,499", "formats max offset naira");
+assert(formatPaymentAmount(null) === "NGN 4,000", "formats null fallback");
+assert(formatPaymentAmount(undefined) === "NGN 4,000", "formats undefined fallback");
 
 console.log("plan self-test complete.");

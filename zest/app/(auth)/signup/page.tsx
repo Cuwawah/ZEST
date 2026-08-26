@@ -94,7 +94,7 @@ export default function SignUpPage() {
             </button>
 
             <p className="trial-note">
-              Free plan forever · includes a 7-day Pro trial · NGN 3,500/month after · no card needed
+              Free plan forever · includes a 7-day Pro trial · NGN 4,000/month after · no card needed
             </p>
           </form>
 
