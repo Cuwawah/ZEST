@@ -7,20 +7,24 @@ type BrandedHeaderProps = {
 
 export default function BrandedHeader({ logoUrl, hideBranding }: BrandedHeaderProps) {
   return (
-    <Link href="/" className="logo-wrap">
-      {logoUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={logoUrl} alt="" className="logo-img" />
-      ) : (
-        <>
-          <span className="logo-icon">🍋</span>
-          <span className="logo-text">zest</span>
-        </>
-      )}
+    <div className="logo-wrap">
+      <Link href="/" className="logo-link">
+        {logoUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={logoUrl} alt="" className="logo-img" />
+        ) : (
+          <>
+            <span className="logo-icon">🍋</span>
+            <span className="logo-text">zest</span>
+          </>
+        )}
+      </Link>
 
       {!hideBranding && (
-        <span className="powered">Powered by Zest</span>
+        <Link href="/" className="powered">
+          🍋 Powered by Zest
+        </Link>
       )}
-    </Link>
+    </div>
   );
 }

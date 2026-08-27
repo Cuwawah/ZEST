@@ -200,13 +200,29 @@ export default function BookPage() {
           object-fit: contain;
         }
 
+        .logo-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+        }
+
         .powered {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
           font-size: 0.625rem;
           color: #a0a080;
           text-transform: uppercase;
           letter-spacing: 0.06em;
           border-left: 1px solid #e8e4cc;
           padding-left: 8px;
+          text-decoration: none;
+          transition: color 0.15s;
+        }
+
+        .powered:hover {
+          color: #7a7a60;
         }
 
         .logo-icon {

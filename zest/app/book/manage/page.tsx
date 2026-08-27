@@ -9,6 +9,7 @@ import {
   cancelClientBooking,
   rescheduleBooking,
 } from "@/app/actions/bookings";
+import BrandedHeader from "@/components/booking/BrandedHeader";
 import TimeSlotPicker from "@/components/booking/TimeSlotPicker";
 import { formatDateTimeInTz } from "@/lib/dates";
 
@@ -66,10 +67,7 @@ function ManageContent() {
 
       <div className="container">
         <div className="header">
-          <Link href="/" className="brand-link">
-            <span className="logo-icon">🍋</span>
-            <span className="logo-text">zest</span>
-          </Link>
+          <BrandedHeader />
         </div>
 
         <div className="card">
@@ -190,8 +188,14 @@ function ManageContent() {
       </div>
 
       <style jsx>{`
-        .brand-link {
-          display: flex;
+        .header { margin-bottom: 32px; }
+        .logo-wrap {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .logo-link {
+          display: inline-flex;
           align-items: center;
           gap: 8px;
           text-decoration: none;
@@ -204,6 +208,20 @@ function ManageContent() {
           color: #1a1a0f;
           letter-spacing: -0.5px;
         }
+        .powered {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.625rem;
+          color: #a0a080;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          border-left: 1px solid #e8e4cc;
+          padding-left: 8px;
+          text-decoration: none;
+          transition: color 0.15s;
+        }
+        .powered:hover { color: #7a7a60; }
         .manage-actions {
           display: flex;
           gap: 10px;

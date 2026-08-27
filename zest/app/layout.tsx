@@ -27,10 +27,33 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Zest - Booking + Intake Forms",
-  description: "Simple booking platform for service-based businesses",
-  icons: {
-    icon: "/icon.svg",
+  metadataBase: new URL("https://zestbook.org.ng"),
+  title: {
+    default: "Zest — Booking & Intake Forms for Nigerian Service Businesses",
+    template: "%s | Zest",
+  },
+  description:
+    "Free scheduling platform for coaches, tutors, therapists, and consultants in Nigeria. Shareable booking links, custom intake forms, WhatsApp confirmations. Start free.",
+  icons: { icon: "/icon.svg" },
+  openGraph: {
+    type: "website",
+    locale: "en_NG",
+    siteName: "Zest",
+    title: "Zest — Booking & Intake Forms for Nigerian Service Businesses",
+    description:
+      "Free scheduling platform for coaches, tutors, therapists, and consultants in Nigeria. Shareable booking links, custom intake forms, WhatsApp confirmations.",
+    url: "https://zestbook.org.ng",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zest — Booking & Intake Forms for Nigerian Service Businesses",
+    description:
+      "Free scheduling platform for coaches, tutors, therapists, and consultants in Nigeria.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
 };
 

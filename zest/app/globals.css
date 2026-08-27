@@ -1954,6 +1954,27 @@ body {
   margin-top: 24px;
 }
 
+.landing-page .trust-badges {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.landing-page .trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #7a7a60;
+  font-weight: 500;
+}
+
+.landing-page .trust-icon {
+  font-size: 16px;
+}
+
 /* FAQ */
 .landing-page .faq {
   padding: 80px 0;

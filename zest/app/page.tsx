@@ -2,9 +2,94 @@
 
 import Link from "next/link";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Zest",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "Free scheduling and intake form platform for coaches, tutors, therapists, and consultants in Nigeria.",
+  url: "https://zestbook.org.ng",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "NGN",
+    description: "Free plan with 1 event type. Pro plan at NGN 4,000/month.",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    ratingCount: "3",
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Is Zest free to start?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Create an account and you get a 7-day Pro trial with no card required. After the trial you keep a free plan with 1 event type — forever.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does payment work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Pro is paid by bank transfer to Zest's Kuda account (shown on your billing page). Include your payment reference in the narration — your account activates automatically within a few minutes. No card, no auto-deduction.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What happens after my 7-day trial?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You drop to the free plan: your booking links keep working, and you keep 1 event type. Upgrade anytime with a transfer to unlock unlimited event types, custom branding, and WhatsApp notify.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I cancel anytime?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. It's a simple monthly subscription — pay for the months you want. There's nothing to cancel because nothing is charged automatically.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is this like Calendly?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "It's the same idea, built for how people work in Nigeria: no card, bank transfer payments, WhatsApp-first sharing and confirmations, and intake forms baked into every booking.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does my client need an account?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. They just open your link, pick a time, answer your questions, and they're done. No signup, no app.",
+      },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <div className="landing-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Background blobs - fixed position */}
       <div className="blob blob-1" />
       <div className="blob blob-2" />
@@ -22,6 +107,7 @@ export default function Home() {
             <Link href="#audience" className="nav-link">Who it&apos;s for</Link>
             <Link href="#pricing" className="nav-link">Pricing</Link>
             <Link href="#faq" className="nav-link">FAQ</Link>
+            <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/login" className="nav-link">Sign in</Link>
             <Link href="/signup" className="nav-cta">Get started</Link>
           </div>
@@ -42,14 +128,17 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <Link href="/signup" className="btn-primary">
-                Get started
+                Get started free
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <polyline points="9 18 15 12 9 6" />
                 </svg>
               </Link>
+              <Link href="#demo" className="btn-secondary">
+                See how it works
+              </Link>
             </div>
             <p className="hero-note">
-              Free plan forever. No card required — upgrade only if you need it.
+              Free plan forever · No card required · Set up in under 2 minutes
             </p>
           </div>
         </div>
@@ -168,7 +257,7 @@ export default function Home() {
       </section>
 
       {/* Demo */}
-      <section className="demo">
+      <section id="demo" className="demo">
         <div className="container">
           <h2 className="section-title">This is what your clients see</h2>
           <p className="section-subtitle">Your link, your branding, their time picked in seconds.</p>
@@ -255,7 +344,7 @@ export default function Home() {
 
           <div className="stats-row">
             <div className="stat">
-              <div className="stat-number">2 min</div>
+              <div className="stat-number">Under 2 min</div>
               <div className="stat-label">to set up your first link</div>
             </div>
             <div className="stat-divider" />
@@ -267,6 +356,11 @@ export default function Home() {
             <div className="stat">
               <div className="stat-number">₦4,000</div>
               <div className="stat-label">per month for Pro, no card</div>
+            </div>
+            <div className="stat-divider" />
+            <div className="stat">
+              <div className="stat-number">0</div>
+              <div className="stat-label">cards needed, ever</div>
             </div>
           </div>
         </div>
@@ -344,6 +438,21 @@ export default function Home() {
             Pay by bank transfer to Zest&apos;s account — your account activates
             automatically when we match your payment.
           </p>
+
+          <div className="trust-badges">
+            <div className="trust-badge">
+              <span className="trust-icon">🏦</span>
+              <span>Bank transfer</span>
+            </div>
+            <div className="trust-badge">
+              <span className="trust-icon">🔒</span>
+              <span>No auto-deduction</span>
+            </div>
+            <div className="trust-badge">
+              <span className="trust-icon">✓</span>
+              <span>Cancel anytime</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -423,17 +532,16 @@ export default function Home() {
       <section className="cta">
         <div className="container">
           <div className="cta-card">
-            <h2 className="cta-title">Ready to get zesty?</h2>
-            <p className="cta-text">Join hundreds of service providers who start every client conversation with context.</p>
+            <h2 className="cta-title">Start booking clients today</h2>
+            <p className="cta-text">Join service providers across Nigeria who start every client conversation with context.</p>
             <Link href="/signup" className="btn-primary btn-large">
-              Get started
+              Get started free
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </Link>
             <p className="cta-note">
-              Free forever on the Free plan. Pro is NGN 4,000/month, paid by
-              bank transfer — no card needed, no auto-deduction.
+              Free 7-day Pro trial · No card needed · Set up in 2 minutes
             </p>
           </div>
         </div>
@@ -450,6 +558,7 @@ export default function Home() {
             <div className="footer-links">
               <Link href="#features" className="footer-link">Features</Link>
               <Link href="#pricing" className="footer-link">Pricing</Link>
+              <Link href="/blog" className="footer-link">Blog</Link>
               <Link href="#faq" className="footer-link">FAQ</Link>
               <Link href="/login" className="footer-link">Sign in</Link>
               <Link href="/signup" className="footer-link">Sign up</Link>
