@@ -182,6 +182,12 @@ export default function Home() {
             </div>
 
             <div className="feature-card">
+              <div className="feature-icon">🌐</div>
+              <h3 className="feature-title">Business page</h3>
+              <p className="feature-desc">A public page showcasing all your services in one place. Share it everywhere — your mini website, built in.</p>
+            </div>
+
+            <div className="feature-card">
               <div className="feature-icon">💬</div>
               <h3 className="feature-title">WhatsApp-first</h3>
               <p className="feature-desc">Share your booking link on WhatsApp and confirm bookings with one tap — how your clients actually communicate.</p>
@@ -427,6 +433,11 @@ export default function Home() {
                 </tr>
                 <tr>
                   <td className="pricing-feature-col">One-tap WhatsApp notify</td>
+                  <td className="muted-cell">—</td>
+                  <td className="pro-cell">✓</td>
+                </tr>
+                <tr>
+                  <td className="pricing-feature-col">Public business page</td>
                   <td className="muted-cell">—</td>
                   <td className="pro-cell">✓</td>
                 </tr>

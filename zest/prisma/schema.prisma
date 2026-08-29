@@ -28,6 +28,11 @@ model User {
   logoUrl      String?
   accentColor  String?
   hideBranding Boolean  @default(false)
+  profileSlug  String?  @unique
+  bio          String?
+  website      String?
+  socialLinks  String?
+  coverImage   String?
   createdAt    DateTime @default(now())
 
   eventTypes        EventType[]

@@ -1,12 +1,21 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts } from "@/lib/blog";
+import { getAllProfileSlugs } from "@/app/actions/profile";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = getAllPosts().map((post) => ({
     url: `https://zestbook.org.ng/blog/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+  }));
+
+  const profileSlugs = await getAllProfileSlugs();
+  const profiles = profileSlugs.map((slug) => ({
+    url: `https://zestbook.org.ng/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
   }));
 
   return [
@@ -35,6 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     ...posts,
+    ...profiles,
     {
       url: "https://zestbook.org.ng/tutorial",
       lastModified: new Date(),

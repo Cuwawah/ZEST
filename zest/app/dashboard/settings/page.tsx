@@ -53,7 +53,7 @@ const TIMEZONES = [
   "Australia/Sydney", "Pacific/Auckland",
 ];
 
-type Tab = "profile" | "booking" | "branding" | "account";
+type Tab = "profile" | "business" | "booking" | "branding" | "account";
 
 const ACCENT_PRESETS = [
   "#f5c518",
@@ -123,6 +123,15 @@ export default function SettingsPage() {
   const [accentColor, setAccentColor] = useState("#f5c518");
   const [hideBranding, setHideBranding] = useState(false);
 
+  // Business page
+  const [profileSlug, setProfileSlug] = useState("");
+  const [bio, setBio] = useState("");
+  const [website, setWebsite] = useState("");
+  const [twitterHandle, setTwitterHandle] = useState("");
+  const [instagramHandle, setInstagramHandle] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [coverImage, setCoverImage] = useState("");
+
   // Booking
   const [bufferTime, setBufferTime] = useState(0);
   const [minNotice, setMinNotice] = useState(24);
@@ -151,6 +160,20 @@ export default function SettingsPage() {
     setHideBranding(!!user.hideBranding);
     setBufferTime(user.bufferTime || 0);
     setMinNotice(user.minNotice || 24);
+    setProfileSlug(user.profileSlug || "");
+    setBio(user.bio || "");
+    setWebsite(user.website || "");
+    setCoverImage(user.coverImage || "");
+    try {
+      const social = user.socialLinks ? JSON.parse(user.socialLinks) : {};
+      setTwitterHandle(social.twitter || "");
+      setInstagramHandle(social.instagram || "");
+      setWhatsappNumber(social.whatsapp || "");
+    } catch {
+      setTwitterHandle("");
+      setInstagramHandle("");
+      setWhatsappNumber("");
+    }
   }
 
   const handleChangePassword = async () => {
@@ -206,6 +229,21 @@ export default function SettingsPage() {
         });
       }
 
+      if (tab === "business") {
+        const socialLinksObj: Record<string, string> = {};
+        if (twitterHandle.trim()) socialLinksObj.twitter = twitterHandle.trim();
+        if (instagramHandle.trim()) socialLinksObj.instagram = instagramHandle.trim();
+        if (whatsappNumber.trim()) socialLinksObj.whatsapp = whatsappNumber.trim();
+
+        await updateUser({
+          profileSlug: profileSlug || undefined,
+          bio: bio || undefined,
+          website: website || undefined,
+          socialLinks: Object.keys(socialLinksObj).length > 0 ? JSON.stringify(socialLinksObj) : undefined,
+          coverImage: coverImage || undefined,
+        });
+      }
+
       setSavedTab(tab);
       setTimeout(() => setSavedTab(null), 2500);
     } catch (error) {
@@ -227,9 +265,9 @@ export default function SettingsPage() {
       </div>
 
       <div className="tabs">
-        {(["profile", "booking", "branding", "account"] as Tab[]).map((t) => (
+        {(["profile", "business", "booking", "branding", "account"] as Tab[]).map((t) => (
           <button key={t} className={`tab ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>
-            {t.charAt(0).toUpperCase() + t.slice(1)}
+            {t === "business" ? "Business Page" : t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
@@ -289,6 +327,119 @@ export default function SettingsPage() {
             </div>
           </div>
         )}
+
+        {/* BUSINESS PAGE TAB */}
+        {tab === "business" &&
+          (isPro ? (
+            <div className="form">
+              <div className="field">
+                <label className="label">Business page URL</label>
+                <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
+                  <span style={{ padding: "0.5rem 0.75rem", fontSize: "0.875rem", color: "var(--muted)", background: "#f5f3e8", border: "1px solid var(--border)", borderRadius: "0.5rem 0 0 0.5rem", borderRight: "none", whiteSpace: "nowrap" }}>
+                    zestbook.org.ng/
+                  </span>
+                  <input
+                    className="input"
+                    value={profileSlug}
+                    onChange={(e) => setProfileSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                    placeholder="my-business"
+                    style={{ borderRadius: "0 0.5rem 0.5rem 0", flex: 1 }}
+                  />
+                </div>
+                <p className="hint">
+                  Your public business page. Only lowercase letters, numbers, and hyphens. 2-50 characters.
+                </p>
+                {profileSlug && (
+                  <p className="hint" style={{ marginTop: "0.25rem" }}>
+                    Your page:{" "}
+                    <a
+                      href={`https://zestbook.org.ng/${profileSlug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hint-link"
+                    >
+                      zestbook.org.ng/{profileSlug} ↗
+                    </a>
+                  </p>
+                )}
+              </div>
+              <div className="field">
+                <label className="label">Bio <span className="optional">(optional)</span></label>
+                <textarea
+                  className="input textarea"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder="Tell clients what you do..."
+                  maxLength={300}
+                />
+                <p className="hint">{bio.length}/300 characters</p>
+              </div>
+              <div className="field">
+                <label className="label">Website <span className="optional">(optional)</span></label>
+                <input
+                  className="input"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  placeholder="https://example.com"
+                />
+              </div>
+              <div className="field">
+                <label className="label">Social links <span className="optional">(optional)</span></label>
+                <input
+                  className="input"
+                  value={twitterHandle}
+                  onChange={(e) => setTwitterHandle(e.target.value)}
+                  placeholder="Twitter/X handle (e.g. @yourhandle)"
+                  style={{ marginBottom: "0.5rem" }}
+                />
+                <input
+                  className="input"
+                  value={instagramHandle}
+                  onChange={(e) => setInstagramHandle(e.target.value)}
+                  placeholder="Instagram handle (e.g. @yourhandle)"
+                  style={{ marginBottom: "0.5rem" }}
+                />
+                <input
+                  className="input"
+                  value={whatsappNumber}
+                  onChange={(e) => setWhatsappNumber(e.target.value)}
+                  placeholder="WhatsApp number (e.g. +234...)"
+                />
+              </div>
+              <div className="field">
+                <label className="label">Cover image URL <span className="optional">(optional)</span></label>
+                <input
+                  className="input"
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  placeholder="https://example.com/cover.jpg"
+                />
+                <p className="hint">A banner image for the top of your page. Recommended: 1200x400px.</p>
+                {coverImage && (
+                  <div className="logo-preview">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={coverImage} alt="Cover preview" style={{ maxWidth: "100%", maxHeight: 120, objectFit: "cover", borderRadius: 8 }} />
+                  </div>
+                )}
+              </div>
+              <div className="actions">
+                <SaveBtn tabName="business" saving={saving} savedTab={savedTab} onSave={handleSave} />
+              </div>
+            </div>
+          ) : (
+            <div className="form">
+              <div className="empty">
+                <span className="empty-icon">🌐</span>
+                <h2 className="empty-heading">Business page is Pro</h2>
+                <p className="empty-text">
+                  Create a public business page showcasing all your services in one place. Share it on social media, WhatsApp, and more.
+                </p>
+                <Link href="/dashboard/billing" className="btn-primary">
+                  Upgrade to Pro
+                </Link>
+              </div>
+            </div>
+          ))}
 
         {/* BOOKING TAB */}
         {tab === "booking" && (

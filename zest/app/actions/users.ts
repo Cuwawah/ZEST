@@ -6,6 +6,12 @@ import { effectiveTier } from "@/lib/plan";
 
 export { getCurrentUser };
 
+const BLOCKED_PROFILE_SLUGS = [
+  "blog", "book", "dashboard", "api", "auth", "payment", "privacy",
+  "terms", "tutorial", "admin", "favicon.ico", "sitemap.xml", "robots.txt",
+  "signup", "login", "settings", "profile",
+];
+
 export async function updateUser(data: {
   name?: string;
   businessName?: string;
@@ -17,6 +23,11 @@ export async function updateUser(data: {
   logoUrl?: string;
   accentColor?: string;
   hideBranding?: boolean;
+  profileSlug?: string;
+  bio?: string;
+  website?: string;
+  socialLinks?: string;
+  coverImage?: string;
 }) {
   const userId = await getSessionUserId();
   if (!userId) throw new Error("Not authenticated");
@@ -31,6 +42,24 @@ export async function updateUser(data: {
     if (existing) throw new Error("This booking link is already taken");
   }
 
+  if (data.profileSlug !== undefined && data.profileSlug !== user.profileSlug) {
+    const raw = data.profileSlug.trim().toLowerCase();
+    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(raw)) {
+      throw new Error("Profile URL can only contain lowercase letters, numbers, and hyphens. It must start and end with a letter or number.");
+    }
+    if (raw.length < 2 || raw.length > 50) {
+      throw new Error("Profile URL must be between 2 and 50 characters.");
+    }
+    if (BLOCKED_PROFILE_SLUGS.includes(raw)) {
+      throw new Error("This URL is reserved. Please choose a different one.");
+    }
+    const existing = await prisma.user.findUnique({
+      where: { profileSlug: raw },
+    });
+    if (existing) throw new Error("This business page URL is already taken. Please choose another.");
+    data.profileSlug = raw;
+  }
+
   const clean: {
     name?: string;
     businessName?: string;
@@ -42,6 +71,11 @@ export async function updateUser(data: {
     logoUrl?: string | null;
     accentColor?: string;
     hideBranding?: boolean;
+    profileSlug?: string | null;
+    bio?: string | null;
+    website?: string | null;
+    socialLinks?: string | null;
+    coverImage?: string | null;
   } = {};
 
   if (data.name !== undefined) clean.name = data.name;
@@ -71,6 +105,37 @@ export async function updateUser(data: {
       clean.accentColor = data.accentColor;
     }
     if (data.hideBranding !== undefined) clean.hideBranding = data.hideBranding;
+  }
+
+  if (data.profileSlug !== undefined) {
+    if (!isPro) {
+      throw new Error("Business page is a Pro feature. Upgrade to use it.");
+    }
+    clean.profileSlug = data.profileSlug ? data.profileSlug.trim().toLowerCase() : null;
+  }
+  if (data.bio !== undefined) {
+    if (!isPro) {
+      throw new Error("Business page is a Pro feature. Upgrade to use it.");
+    }
+    clean.bio = data.bio.trim() || null;
+  }
+  if (data.website !== undefined) {
+    if (!isPro) {
+      throw new Error("Business page is a Pro feature. Upgrade to use it.");
+    }
+    clean.website = data.website.trim() || null;
+  }
+  if (data.socialLinks !== undefined) {
+    if (!isPro) {
+      throw new Error("Business page is a Pro feature. Upgrade to use it.");
+    }
+    clean.socialLinks = data.socialLinks.trim() || null;
+  }
+  if (data.coverImage !== undefined) {
+    if (!isPro) {
+      throw new Error("Business page is a Pro feature. Upgrade to use it.");
+    }
+    clean.coverImage = data.coverImage.trim() || null;
   }
 
   return prisma.user.update({
