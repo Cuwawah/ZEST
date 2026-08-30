@@ -120,12 +120,12 @@ export default function Home() {
         <div className="container">
           <div className="hero-card">
             <h1 className="hero-title">
-              Know what your client needs <br />
-              <span className="hero-highlight">before they arrive</span>
+              Know your client&apos;s story <br />
+              <span className="hero-highlight">before they walk in</span>
             </h1>
             <p className="hero-subtitle">
-              Book clients, ask questions before you meet, and get your own
-              business page — no website needed.
+              Book clients, ask intake questions, and get insights on who comes
+              back — plus your own business page.
             </p>
             <div className="hero-actions">
               <Link href="/signup" className="btn-primary">
@@ -186,6 +186,12 @@ export default function Home() {
               <div className="feature-icon">🌐</div>
               <h3 className="feature-title">Business page</h3>
               <p className="feature-desc">A page that shows all your services in one place. Share one link everywhere — it&apos;s like your own website.</p>
+            </div>
+
+            <div className="feature-card">
+              <div className="feature-icon">🧠</div>
+              <h3 className="feature-title">Client insights</h3>
+              <p className="feature-desc">See who books again, who needs a follow-up, and what changed between visits — automatically.</p>
             </div>
 
             <div className="feature-card">
