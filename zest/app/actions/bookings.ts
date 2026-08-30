@@ -12,6 +12,7 @@ import {
   verifyBookingToken,
 } from "@/lib/bookingTokens";
 import { overlaps } from "@/lib/capacity";
+import { findOrCreateClient } from "@/lib/clients";
 
 async function verifyBookingOwner(bookingId: string): Promise<void> {
   const userId = await getSessionUserId();
@@ -91,9 +92,16 @@ export async function createBooking(data: {
       if (used >= capacity)
         throw new Error("This time slot is no longer available");
 
+      const clientId = await findOrCreateClient(tx, eventType.userId, {
+        name: data.clientName,
+        email: data.clientEmail,
+        phone: data.phone,
+      });
+
       const booking = await tx.booking.create({
         data: {
           eventTypeId: data.eventTypeId,
+          clientId,
           clientName: data.clientName,
           clientEmail: data.clientEmail,
           phone: data.phone || null,
@@ -231,6 +239,17 @@ export async function getBookingWithResponses(bookingId: string) {
   return { ...booking, responses };
 }
 
+export async function updateBookingNotes(
+  bookingId: string,
+  notes: string
+): Promise<void> {
+  await verifyBookingOwner(bookingId);
+  await prisma.booking.update({
+    where: { id: bookingId },
+    data: { notes: notes || null },
+  });
+}
+
 export async function cancelBooking(bookingId: string) {
   await verifyBookingOwner(bookingId);
 
@@ -312,6 +331,7 @@ export async function getBookingByToken(token: string) {
 
   return {
     id: booking.id,
+    clientId: booking.clientId,
     clientName: booking.clientName,
     clientEmail: booking.clientEmail,
     phone: booking.phone,

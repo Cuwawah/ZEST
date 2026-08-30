@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getEventTypeBySlug } from "@/app/actions/eventTypes";
 import { createBooking } from "@/app/actions/bookings";
+import { getClientPublicInfo } from "@/app/actions/clients";
 import IntakeForm from "@/components/booking/IntakeForm";
 import BrandedHeader from "@/components/booking/BrandedHeader";
 import { formatDateTimeInTz } from "@/lib/dates";
@@ -16,6 +17,7 @@ export default function ConfirmPage() {
   const router = useRouter();
   const slug = params.slug as string;
   const timeParam = searchParams.get("time");
+  const clientParam = searchParams.get("client");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,6 +25,12 @@ export default function ConfirmPage() {
   const { data: eventType } = useQuery({
     queryKey: ["eventType", "slug", slug],
     queryFn: () => getEventTypeBySlug(slug),
+  });
+
+  const { data: clientInfo } = useQuery({
+    queryKey: ["clientPublic", clientParam],
+    queryFn: () => (clientParam ? getClientPublicInfo(clientParam) : null),
+    enabled: !!clientParam,
   });
 
   const selectedTime = timeParam ? parseInt(timeParam) : null;
@@ -138,6 +146,7 @@ export default function ConfirmPage() {
             eventTypeId={eventType.id}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
+            initialValues={clientInfo ? { name: clientInfo.name || undefined, email: clientInfo.email, phone: clientInfo.phone || undefined } : undefined}
           />
 
           <div className="footer">

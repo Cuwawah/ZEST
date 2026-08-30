@@ -41,6 +41,8 @@ model User {
 
   eventTypes        EventType[]
   paymentMatches    PaymentTransaction[]
+  clients           Client[]
+  clientTags        ClientTag[]
 }
 
 model EventType {
@@ -100,20 +102,24 @@ model IntakeQuestion {
 model Booking {
   id          String   @id @default(cuid())
   eventTypeId String
+  clientId    String?
   clientName  String
   clientEmail String
   phone       String?
   startTime   DateTime
   endTime     DateTime
   status      String   @default("confirmed")
+  notes       String?
   reminderSentAt DateTime?
   cancelledAt DateTime?
   createdAt   DateTime @default(now())
 
   eventType EventType @relation(fields: [eventTypeId], references: [id])
+  client    Client?   @relation(fields: [clientId], references: [id])
   responses Response[]
 
   @@index([eventTypeId])
+  @@index([clientId])
 }
 
 model Response {
@@ -127,6 +133,48 @@ model Response {
 
   @@index([bookingId])
   @@index([questionId])
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String?
+  email     String
+  phone     String?
+  createdAt DateTime @default(now())
+
+  user     User      @relation(fields: [userId], references: [id])
+  bookings Booking[]
+  tags     ClientTagAssignment[]
+
+  @@unique([userId, email])
+  @@index([userId])
+}
+
+model ClientTag {
+  id     String @id @default(cuid())
+  userId String
+  name   String
+  color  String @default("#f5c518")
+
+  user    User        @relation(fields: [userId], references: [id])
+  clients ClientTagAssignment[]
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model ClientTagAssignment {
+  id       String @id @default(cuid())
+  clientId String
+  tagId    String
+
+  client Client    @relation(fields: [clientId], references: [id])
+  tag    ClientTag @relation(fields: [tagId], references: [id])
+
+  @@unique([clientId, tagId])
+  @@index([clientId])
+  @@index([tagId])
 }
 
 model PaymentTransaction {

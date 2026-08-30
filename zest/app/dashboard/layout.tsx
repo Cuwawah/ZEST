@@ -94,6 +94,7 @@ export default function DashboardLayout({
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: "📋" },
     { href: "/dashboard/event-types", label: "Event Types", icon: "📅" },
+    { href: "/dashboard/clients", label: "Clients", icon: "👥" },
     { href: "/dashboard/settings", label: "Settings", icon: "⚙️" },
   ];
 

@@ -21,17 +21,22 @@ interface IntakeFormProps {
     responses: { questionId: string; answer: string }[];
   }) => void;
   isSubmitting?: boolean;
+  initialValues?: {
+    name?: string;
+    email?: string;
+    phone?: string;
+  };
 }
 
-export default function IntakeForm({ eventTypeId, onSubmit, isSubmitting }: IntakeFormProps) {
+export default function IntakeForm({ eventTypeId, onSubmit, isSubmitting, initialValues }: IntakeFormProps) {
   const { data: questions, isLoading } = useQuery({
     queryKey: ["publicQuestions", eventTypeId],
     queryFn: () => getPublicQuestions(eventTypeId),
   });
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(initialValues?.name || "");
+  const [email, setEmail] = useState(initialValues?.email || "");
+  const [phone, setPhone] = useState(initialValues?.phone || "");
   const [responses, setResponses] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 

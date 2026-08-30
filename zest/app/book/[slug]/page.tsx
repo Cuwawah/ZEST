@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -14,7 +14,9 @@ import BrandedHeader from "@/components/booking/BrandedHeader";
 export default function BookPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const slug = params.slug as string;
+  const clientId = searchParams.get("client");
 
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
@@ -29,7 +31,9 @@ export default function BookPage() {
 
   const handleContinue = () => {
     if (selectedSlot) {
-      router.push(`/book/${slug}/confirm?time=${selectedSlot}`);
+      const params = new URLSearchParams({ time: String(selectedSlot) });
+      if (clientId) params.set("client", clientId);
+      router.push(`/book/${slug}/confirm?${params.toString()}`);
     }
   };
 

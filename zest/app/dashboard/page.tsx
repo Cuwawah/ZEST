@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { useUpcomingBookings, useBooking, useCancelBooking } from "@/hooks/useBookings";
+import { useUpcomingBookings, useBooking, useCancelBooking, useUpdateBookingNotes } from "@/hooks/useBookings";
 import { useEventTypes } from "@/hooks/useEventTypes";
 import { getCurrentUserPlan } from "@/app/actions/admin";
 import { getReferralStats } from "@/app/actions/referrals";
@@ -18,6 +18,8 @@ export default function DashboardPage() {
   const [cancelling, setCancelling] = useState(false);
   const [copied, setCopied] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
+  const [editingNotes, setEditingNotes] = useState<string | null>(null);
+  const updateNotes = useUpdateBookingNotes();
 
   const { data: planInfo } = useQuery({
     queryKey: ["currentUserPlan"],
@@ -276,7 +278,17 @@ export default function DashboardPage() {
                           {booking.clientName.charAt(0)}
                         </div>
                         <div className="card-info">
-                          <p className="client-name">{booking.clientName}</p>
+                          {booking.clientId ? (
+                            <Link
+                              href={`/dashboard/clients/${booking.clientId}`}
+                              className="client-name client-link"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {booking.clientName}
+                            </Link>
+                          ) : (
+                            <p className="client-name">{booking.clientName}</p>
+                          )}
                           <p className="client-email">{booking.clientEmail}</p>
                           <p className="event-type">
                             {eventType?.name || "Booking"}
@@ -327,8 +339,62 @@ export default function DashboardPage() {
                           <p className="no-responses">No intake responses for this booking.</p>
                         )}
 
+                        <div className="notes-section">
+                          <p className="responses-heading">Session notes</p>
+                          {editingNotes === booking.id ? (
+                            <div className="notes-edit">
+                              <textarea
+                                className="notes-textarea"
+                                value={expandedBooking?.notes || ""}
+                                onChange={(e) => {}}
+                                placeholder="Add notes about this client or session..."
+                                rows={3}
+                                autoFocus
+                              />
+                              <div className="notes-actions">
+                                <button
+                                  className="btn-save-notes"
+                                  onClick={() => {
+                                    const textarea = document.querySelector(".notes-textarea") as HTMLTextAreaElement;
+                                    if (textarea && expandedBooking) {
+                                      updateNotes({ id: booking.id, notes: textarea.value });
+                                      setEditingNotes(null);
+                                    }
+                                  }}
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  className="btn-cancel-notes"
+                                  onClick={() => setEditingNotes(null)}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              className="notes-display"
+                              onClick={() => setEditingNotes(booking.id)}
+                            >
+                              {expandedBooking?.notes || (
+                                <span className="notes-placeholder">Click to add notes...</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
                         <div className="detail-actions">
                           <div className="detail-actions-row">
+                            {booking.clientId && (
+                              <Link
+                                href={`/book/${eventType?.slug || ""}?client=${booking.clientId}`}
+                                className="btn-rebook"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Book again
+                              </Link>
+                            )}
                             {booking.phone && isPro && creatorPhone ? (
                               <button
                                 className="btn-whatsapp-small"
@@ -435,6 +501,15 @@ export default function DashboardPage() {
           color: var(--foreground);
         }
 
+        .client-link {
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .client-link:hover {
+          text-decoration: underline;
+        }
+
         .client-email {
           font-size: 0.75rem;
           color: var(--muted);
@@ -530,6 +605,100 @@ export default function DashboardPage() {
           font-size: 0.8125rem;
           color: var(--muted);
           margin: 0 0 1rem;
+        }
+
+        .notes-section {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid var(--border);
+        }
+
+        .notes-display {
+          font-size: 0.8125rem;
+          color: var(--foreground);
+          padding: 0.5rem 0.75rem;
+          background: #fdfcf5;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          cursor: pointer;
+          min-height: 2.5rem;
+          white-space: pre-wrap;
+        }
+
+        .notes-display:hover {
+          border-color: #d4d0b8;
+        }
+
+        .notes-placeholder {
+          color: var(--muted);
+          font-style: italic;
+        }
+
+        .notes-textarea {
+          width: 100%;
+          font-size: 0.8125rem;
+          font-family: inherit;
+          padding: 0.5rem 0.75rem;
+          background: #fdfcf5;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          resize: vertical;
+          min-height: 4rem;
+          color: var(--foreground);
+        }
+
+        .notes-textarea:focus {
+          outline: none;
+          border-color: var(--primary, #f5c518);
+          box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.18);
+        }
+
+        .notes-actions {
+          display: flex;
+          gap: 0.5rem;
+          margin-top: 0.5rem;
+        }
+
+        .btn-save-notes {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: #1a1a0f;
+          background: #f5c518;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+        }
+
+        .btn-save-notes:hover {
+          background: #e6b800;
+        }
+
+        .btn-cancel-notes {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.8125rem;
+          font-weight: 500;
+          color: var(--muted);
+          background: none;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          cursor: pointer;
+        }
+
+        .btn-rebook {
+          padding: 0.375rem 0.75rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: var(--accent, #c08b00);
+          background: #fdfcf5;
+          border: 1px solid var(--border);
+          border-radius: 0.5rem;
+          text-decoration: none;
+        }
+
+        .btn-rebook:hover {
+          border-color: var(--primary, #f5c518);
+          background: #fef9c3;
         }
 
         .detail-actions {

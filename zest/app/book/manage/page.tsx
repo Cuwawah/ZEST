@@ -135,6 +135,14 @@ function ManageContent() {
 
               {!rescheduling ? (
                 <div className="manage-actions">
+                  {booking.clientId && (
+                    <Link
+                      href={`/book/${booking.eventType.slug}?client=${booking.clientId}`}
+                      className="btn-rebook"
+                    >
+                      Book again with me
+                    </Link>
+                  )}
                   <button
                     className="btn-secondary"
                     onClick={() => setRescheduling(true)}
@@ -227,6 +235,23 @@ function ManageContent() {
           gap: 10px;
           justify-content: center;
           margin-top: 20px;
+          flex-wrap: wrap;
+        }
+        .btn-rebook {
+          display: inline-block;
+          padding: 10px 16px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #1a1a0f;
+          background: #f5c518;
+          border: none;
+          border-radius: 10px;
+          text-decoration: none;
+          cursor: pointer;
+          transition: background 0.15s;
+        }
+        .btn-rebook:hover {
+          background: #e6b800;
         }
         .manage-message {
           text-align: center;
