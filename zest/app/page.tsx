@@ -119,12 +119,12 @@ export default function Home() {
         <div className="container">
           <div className="hero-card">
             <h1 className="hero-title">
-              Know your clients <br />
-              <span className="hero-highlight">before they walk in</span>
+              Know what your client needs <br />
+              <span className="hero-highlight">before they arrive</span>
             </h1>
             <p className="hero-subtitle">
-              Zest combines scheduling and intake forms so you stop wasting sessions on discovery. 
-              Perfect for coaches, therapists, photographers, and consultants.
+              Zest helps you book clients and learn about them before your meeting. 
+              No more wasted time asking basic questions.
             </p>
             <div className="hero-actions">
               <Link href="/signup" className="btn-primary">
@@ -148,55 +148,55 @@ export default function Home() {
       <section id="features" className="features">
         <div className="container">
           <h2 className="section-title">Everything you need to book clients</h2>
-          <p className="section-subtitle">No complexity. Just booking, forms, and a clean dashboard.</p>
+          <p className="section-subtitle">No complexity. Just booking, questions, and a clean dashboard.</p>
 
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">📅</div>
-              <h3 className="feature-title">Unlimited event types</h3>
-              <p className="feature-desc">Create as many booking types as you need — consultations, discovery calls, workshops, sessions.</p>
+              <h3 className="feature-title">Unlimited services</h3>
+              <p className="feature-desc">Create as many services as you need — consultations, discovery calls, workshops, sessions.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">⏰</div>
-              <h3 className="feature-title">Smart availability</h3>
-              <p className="feature-desc">Set your hours once. We&apos;ll show only open slots to your clients based on your schedule.</p>
+              <h3 className="feature-title">Your schedule, your rules</h3>
+              <p className="feature-desc">Set your available hours once. Clients only see the times you&apos;re free.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">📋</div>
-              <h3 className="feature-title">Custom intake forms</h3>
-              <p className="feature-desc">Add text fields, multiple choice, dropdowns — like a Google Form built into every booking.</p>
+              <h3 className="feature-title">Questions before you meet</h3>
+              <p className="feature-desc">Ask your clients questions before you meet. Text, multiple choice, or dropdown.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">🔗</div>
               <h3 className="feature-title">Shareable booking links</h3>
-              <p className="feature-desc">One unique link per event type. Share it anywhere and watch bookings roll in.</p>
+              <p className="feature-desc">Each service gets its own link. Share it on WhatsApp, Instagram, or anywhere.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">📊</div>
               <h3 className="feature-title">Clean dashboard</h3>
-              <p className="feature-desc">See all upcoming bookings and client responses in one place. No clutter, no noise.</p>
+              <p className="feature-desc">See all your bookings and client answers in one place.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">🌐</div>
               <h3 className="feature-title">Business page</h3>
-              <p className="feature-desc">A public page showcasing all your services in one place. Share it everywhere — your mini website, built in.</p>
+              <p className="feature-desc">A page that shows all your services in one place. Share one link everywhere — it&apos;s like your own website.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">💬</div>
               <h3 className="feature-title">WhatsApp-first</h3>
-              <p className="feature-desc">Share your booking link on WhatsApp and confirm bookings with one tap — how your clients actually communicate.</p>
+              <p className="feature-desc">Share your link on WhatsApp. Confirm with one tap. That&apos;s how your clients already communicate.</p>
             </div>
 
             <div className="feature-card">
               <div className="feature-icon">🔒</div>
               <h3 className="feature-title">Simple, fair pricing</h3>
-              <p className="feature-desc">Free plan forever. Pro at NGN 4,000/month — paid by bank transfer, no card, no auto-deduction.</p>
+              <p className="feature-desc">Free forever. Pro is NGN 4,000/month — pay by bank transfer, no card needed.</p>
             </div>
           </div>
         </div>
@@ -206,14 +206,14 @@ export default function Home() {
       <section id="audience" className="audience">
         <div className="container">
           <h2 className="section-title">Built for service providers</h2>
-          <p className="section-subtitle">If your clients book time with you, Zest makes you look professional.</p>
+          <p className="section-subtitle">If people book time with you, Zest makes you look professional.</p>
 
           <div className="audience-grid">
             <div className="audience-card">
               <div className="audience-icon">🎯</div>
               <h3 className="audience-title">Coaches &amp; consultants</h3>
               <p className="audience-desc">
-                Know what a discovery call is about before it starts. Send intake questions, skip the back-and-forth.
+                Know what a client needs before the meeting. Ask questions upfront, skip the back-and-forth.
               </p>
             </div>
 
@@ -221,7 +221,7 @@ export default function Home() {
               <div className="audience-icon">📚</div>
               <h3 className="audience-title">Tutors &amp; trainers</h3>
               <p className="audience-desc">
-                Share one link and let parents or students pick a slot. Custom questions capture class level, topics, and goals.
+                Share one link. Parents or students pick a time. You ask about class level, topics, and goals.
               </p>
             </div>
 
@@ -229,7 +229,7 @@ export default function Home() {
               <div className="audience-icon">📸</div>
               <h3 className="audience-title">Creatives &amp; makers</h3>
               <p className="audience-desc">
-                Photographers, therapists, stylists, barbers — anything where a booking plus a few questions makes the visit smoother.
+                Photographers, therapists, stylists, barbers — any job where a booking form makes things smoother.
               </p>
             </div>
           </div>
@@ -243,20 +243,20 @@ export default function Home() {
           <div className="steps">
             <div className="step">
               <div className="step-number">1</div>
-              <h3 className="step-title">Create event types</h3>
-              <p className="step-desc">Set up your services, availability, and custom questions in minutes.</p>
+              <h3 className="step-title">Set up your services</h3>
+              <p className="step-desc">Add your services, set your hours, and write your questions. Takes minutes.</p>
             </div>
             <div className="step-arrow">→</div>
             <div className="step">
               <div className="step-number">2</div>
               <h3 className="step-title">Share your link</h3>
-              <p className="step-desc">Send your unique booking link to clients via email, social, or your website.</p>
+              <p className="step-desc">Share your link on WhatsApp, Instagram, email, or anywhere.</p>
             </div>
             <div className="step-arrow">→</div>
             <div className="step">
               <div className="step-number">3</div>
               <h3 className="step-title">Clients book</h3>
-              <p className="step-desc">They pick a time, answer your questions, and it lands in your dashboard.</p>
+              <p className="step-desc">Clients pick a time, answer your questions, and it shows up in your dashboard.</p>
             </div>
           </div>
         </div>
@@ -265,8 +265,8 @@ export default function Home() {
       {/* Demo */}
       <section id="demo" className="demo">
         <div className="container">
-          <h2 className="section-title">This is what your clients see</h2>
-          <p className="section-subtitle">Your link, your branding, their time picked in seconds.</p>
+          <h2 className="section-title">What your clients see</h2>
+          <p className="section-subtitle">Your logo, your colors, your questions. They pick a time in seconds.</p>
 
           <div className="demo-window">
             <div className="demo-frame">
@@ -307,7 +307,7 @@ export default function Home() {
             <div className="demo-note">
               <p>
                 One link, your logo and colors, no app for the client to
-                install. They pick a slot, answer your questions, done.
+                install. They pick a time, answer your questions, done.
               </p>
               <Link href="/signup" className="demo-cta">
                 See it on your own page →
@@ -317,10 +317,85 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Business Page Demo */}
+      <section className="business-demo">
+        <div className="container">
+          <div className="bpd-window">
+            <div className="bpd-frame">
+              <div className="bpd-cover" />
+              <div className="bpd-profile">
+                <div className="bpd-avatar">A</div>
+                <h3 className="bpd-name">Adaeze Okafor</h3>
+                <p className="bpd-bio">Photography &amp; visual arts in Lagos</p>
+                <div className="bpd-links">
+                  <span className="bpd-link-item">🌐 ada.com</span>
+                  <span className="bpd-link-item">💬 WhatsApp</span>
+                </div>
+              </div>
+              <div className="bpd-services">
+                <h4 className="bpd-services-title">Our Services</h4>
+                <div className="bpd-services-grid">
+                  <div className="bpd-service-card">
+                    <div className="bpd-service-header">
+                      <div className="bpd-service-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                      </div>
+                      <span className="bpd-service-duration">30 min</span>
+                    </div>
+                    <div className="bpd-service-name">Consultation</div>
+                    <div className="bpd-service-footer">
+                      <span className="bpd-service-book">Book now →</span>
+                    </div>
+                  </div>
+                  <div className="bpd-service-card">
+                    <div className="bpd-service-header">
+                      <div className="bpd-service-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                      </div>
+                      <span className="bpd-service-duration">60 min</span>
+                    </div>
+                    <div className="bpd-service-name">Photo Shoot</div>
+                    <div className="bpd-service-footer">
+                      <span className="bpd-service-book">Book now →</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bpd-note">
+              <h3 className="bpd-note-title">Your own business page</h3>
+              <p className="bpd-note-text">
+                Every Pro user gets a page that shows all their services in one place.
+              </p>
+              <ul className="bpd-note-list">
+                <li>Share one link on WhatsApp, Instagram, or your business card</li>
+                <li>Shows all your services with a &ldquo;Book&rdquo; button for each</li>
+                <li>Add your logo, colors, bio, and social links</li>
+                <li>Google can find it — more people discover you online</li>
+              </ul>
+              <Link href="/signup" className="bpd-cta">
+                Create your business page →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="testimonials">
         <div className="container">
-          <h2 className="section-title">Loved by busy professionals</h2>
+          <h2 className="section-title">What our users say</h2>
           <div className="testimonials-grid">
             <div className="testimonial-card">
               <div className="testimonial-stars">★★★★★</div>
@@ -356,7 +431,7 @@ export default function Home() {
             <div className="stat-divider" />
             <div className="stat">
               <div className="stat-number">1</div>
-              <div className="stat-label">free event type, forever</div>
+              <div className="stat-label">free service, forever</div>
             </div>
             <div className="stat-divider" />
             <div className="stat">
@@ -375,10 +450,9 @@ export default function Home() {
       {/* Pricing */}
       <section id="pricing" className="pricing">
         <div className="container">
-          <h2 className="section-title">Simple, transparent pricing</h2>
+          <h2 className="section-title">Simple pricing</h2>
           <p className="section-subtitle">
-            Every new account includes a 7-day Pro trial. No card, no
-            auto-deduction, cancel anytime.
+            Every account starts with a 7-day free trial. No card needed. Cancel anytime.
           </p>
 
           <div className="pricing-table-wrap">
@@ -407,12 +481,12 @@ export default function Home() {
               </thead>
               <tbody>
                 <tr>
-                  <td className="pricing-feature-col">Event types</td>
+                  <td className="pricing-feature-col">Services</td>
                   <td>1</td>
                   <td className="pro-cell">Unlimited</td>
                 </tr>
                 <tr>
-                  <td className="pricing-feature-col">Custom intake questions</td>
+                  <td className="pricing-feature-col">Custom questions</td>
                   <td>✓</td>
                   <td className="pro-cell">✓</td>
                 </tr>
@@ -476,63 +550,60 @@ export default function Home() {
             <details className="faq-item">
               <summary>Is Zest free to start?</summary>
               <p>
-                Yes. Create an account and you get a 7-day Pro trial with no
-                card required. After the trial you keep a free plan with 1
-                event type — forever.
+                Yes. Sign up and you get 7 days of Pro for free. No card. After
+                that, you keep a free plan with 1 service — forever.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>How does payment work?</summary>
               <p>
-                Pro is paid by bank transfer to Zest&apos;s Kuda account (shown
-                on your billing page). Include your payment reference in the
-                narration — your account activates automatically within a few
-                minutes. No card, no auto-deduction.
+                Send money to Zest&apos;s bank account (shown on your billing
+                page). Put your payment reference in the narration. Your account
+                activates automatically in minutes. No card, no auto-deduction.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>What happens after my 7-day trial?</summary>
               <p>
-                You drop to the free plan: your booking links keep working, and
-                you keep 1 event type. Upgrade anytime with a transfer to unlock
-                unlimited event types, custom branding, and WhatsApp notify.
+                You drop to the free plan. Your links keep working. You keep 1
+                service. Upgrade anytime by transferring money to unlock
+                unlimited services, your own logo/colors, and WhatsApp
+                confirmations.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>Can I cancel anytime?</summary>
               <p>
-                Yes. It&apos;s a simple monthly subscription — pay for the months
-                you want. There&apos;s nothing to cancel because nothing is
-                charged automatically.
+                Yes. Pay for the months you want. Nothing is taken automatically,
+                so there&apos;s nothing to cancel.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>Is this like Calendly?</summary>
               <p>
-                It&apos;s the same idea, built for how people work in Nigeria:
-                no card, bank transfer payments, WhatsApp-first sharing and
-                confirmations, and intake forms baked into every booking.
+                Same idea, built for Nigeria. No card needed. Pay by bank
+                transfer. Share and confirm on WhatsApp. Questions built into
+                every booking.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>What is WhatsApp notify?</summary>
               <p>
-                One tap opens WhatsApp with a ready-made message to your client
-                or you, so confirmations happen where your clients actually
-                chat — on WhatsApp.
+                One tap opens WhatsApp with a ready message for your client.
+                Confirm where they already chat — on WhatsApp.
               </p>
             </details>
 
             <details className="faq-item">
               <summary>Does my client need an account?</summary>
               <p>
-                No. They just open your link, pick a time, answer your
-                questions, and they&apos;re done. No signup, no app.
+                No. They open your link, pick a time, answer your questions.
+                Done. No signup, no app.
               </p>
             </details>
           </div>
@@ -544,7 +615,7 @@ export default function Home() {
         <div className="container">
           <div className="cta-card">
             <h2 className="cta-title">Start booking clients today</h2>
-            <p className="cta-text">Join service providers across Nigeria who start every client conversation with context.</p>
+            <p className="cta-text">Join thousands of coaches, tutors, and consultants in Nigeria who use Zest.</p>
             <Link href="/signup" className="btn-primary btn-large">
               Get started free
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
