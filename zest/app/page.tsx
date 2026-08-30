@@ -124,8 +124,8 @@ export default function Home() {
               <span className="hero-highlight">before they arrive</span>
             </h1>
             <p className="hero-subtitle">
-              Zest helps you book clients and learn about them before your meeting. 
-              No more wasted time asking basic questions.
+              Book clients, ask questions before you meet, and get your own
+              business page — no website needed.
             </p>
             <div className="hero-actions">
               <Link href="/signup" className="btn-primary">
@@ -263,20 +263,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Demo */}
-      <section id="demo" className="demo">
-        <div className="container">
-          <h2 className="section-title">Try it yourself</h2>
-          <p className="section-subtitle">
-            This is exactly what your clients see. Pick a time, fill the form, done.
-          </p>
-          <DemoBookingWidget />
-        </div>
-      </section>
-
-      {/* Business Page Demo */}
+      {/* Your Business Page */}
       <section className="business-demo">
         <div className="container">
+          <h2 className="section-title">Your own booking website — in minutes</h2>
+          <p className="section-subtitle">
+            No designer. No developer. No hosting fees. Just your services, your
+            logo, and a &ldquo;Book&rdquo; button.
+          </p>
+
           <div className="bpd-window">
             <div className="bpd-frame">
               <div className="bpd-cover" />
@@ -331,21 +326,34 @@ export default function Home() {
             </div>
 
             <div className="bpd-note">
-              <h3 className="bpd-note-title">Your own business page</h3>
+              <h3 className="bpd-note-title">More than a booking link</h3>
               <p className="bpd-note-text">
-                Every Pro user gets a page that shows all their services in one place.
+                Every Pro user gets a page that shows all their services in one
+                place — like your own website, but you don&apos;t need a
+                developer.
               </p>
               <ul className="bpd-note-list">
-                <li>Share one link on WhatsApp, Instagram, or your business card</li>
-                <li>Shows all your services with a &ldquo;Book&rdquo; button for each</li>
+                <li>One link for your Instagram bio, WhatsApp status, and business card</li>
+                <li>Your clients see all your services and book instantly</li>
+                <li>Google can find your page — people discover you online</li>
                 <li>Add your logo, colors, bio, and social links</li>
-                <li>Google can find it — more people discover you online</li>
               </ul>
               <Link href="/signup" className="bpd-cta">
-                Create your business page →
+                Create your free page →
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Demo */}
+      <section id="demo" className="demo">
+        <div className="container">
+          <h2 className="section-title">Try it yourself</h2>
+          <p className="section-subtitle">
+            This is exactly what your clients see. Pick a time, fill the form, done.
+          </p>
+          <DemoBookingWidget />
         </div>
       </section>
 
