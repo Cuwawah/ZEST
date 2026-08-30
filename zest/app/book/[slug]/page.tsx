@@ -74,6 +74,7 @@ export default function BookPage() {
           <BrandedHeader
             logoUrl={eventType.logoUrl}
             hideBranding={eventType.hideBranding}
+            referralCode={eventType.referralCode}
           />
         </div>
 

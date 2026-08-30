@@ -145,6 +145,7 @@ export default function ProfilePage() {
           <BrandedHeader
             logoUrl={user.logoUrl}
             hideBranding={user.hideBranding}
+            referralCode={user.referralCode}
           />
         </div>
 

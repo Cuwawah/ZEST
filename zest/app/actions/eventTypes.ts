@@ -164,6 +164,7 @@ export async function getEventTypeBySlug(slug: string) {
     logoUrl: user.logoUrl,
     accentColor: user.accentColor,
     hideBranding: user.hideBranding,
+    referralCode: user.referralCode,
   };
 }
 

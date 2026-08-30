@@ -112,6 +112,7 @@ export default function ConfirmPage() {
           <BrandedHeader
             logoUrl={eventType.logoUrl}
             hideBranding={eventType.hideBranding}
+            referralCode={eventType.referralCode}
           />
         </div>
 

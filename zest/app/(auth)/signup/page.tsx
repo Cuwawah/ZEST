@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signup } from "@/app/actions/auth";
 
-export default function SignUpPage() {
+function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get("ref") || undefined;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -19,7 +21,7 @@ export default function SignUpPage() {
     setError("");
 
     try {
-      const res = await signup({ name, email, password });
+      const res = await signup({ name, email, password, referralCode });
       if (res.error) {
         setError(res.error);
         setLoading(false);
@@ -387,5 +389,13 @@ export default function SignUpPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense>
+      <SignUpForm />
+    </Suspense>
   );
 }

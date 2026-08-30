@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx lib/kuda/parser.test.ts && tsx lib/kuda/matcher.test.ts && tsx lib/plan.test.ts && tsx lib/subscription.test.ts && tsx lib/bookingTokens.test.ts && tsx lib/availabilityRules.test.ts && tsx lib/capacity.test.ts && tsx lib/reminders.test.ts",
+    "test": "tsx lib/kuda/parser.test.ts && tsx lib/kuda/matcher.test.ts && tsx lib/plan.test.ts && tsx lib/subscription.test.ts && tsx lib/bookingTokens.test.ts && tsx lib/availabilityRules.test.ts && tsx lib/capacity.test.ts && tsx lib/reminders.test.ts && tsx lib/referrals.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

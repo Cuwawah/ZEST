@@ -33,6 +33,10 @@ model User {
   website      String?
   socialLinks  String?
   coverImage   String?
+  referralCode String?  @unique
+  referredById String?
+  referredBy   User?    @relation("Referrals", fields: [referredById], references: [id])
+  referrals    User[]   @relation("Referrals")
   createdAt    DateTime @default(now())
 
   eventTypes        EventType[]

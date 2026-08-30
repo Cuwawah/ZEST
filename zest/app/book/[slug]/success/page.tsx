@@ -67,6 +67,7 @@ export default function SuccessPage() {
           <BrandedHeader
             logoUrl={eventType?.logoUrl}
             hideBranding={eventType?.hideBranding}
+            referralCode={eventType?.referralCode}
           />
         </div>
 

@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrentUser, useUpdateUser } from "@/hooks/useUser";
 import { deleteAccount as deleteAccountAction } from "@/app/actions/users";
 import { getCurrentUserPlan } from "@/app/actions/admin";
+import { getReferralStats } from "@/app/actions/referrals";
 import { signOut, changePassword } from "@/app/actions/auth";
 import { effectiveTier } from "@/lib/plan";
 
@@ -53,7 +54,7 @@ const TIMEZONES = [
   "Australia/Sydney", "Pacific/Auckland",
 ];
 
-type Tab = "profile" | "business" | "booking" | "branding" | "account";
+type Tab = "profile" | "business" | "booking" | "branding" | "referrals" | "account";
 
 const ACCENT_PRESETS = [
   "#f5c518",
@@ -105,6 +106,11 @@ export default function SettingsPage() {
     queryFn: () => getCurrentUserPlan(),
   });
 
+  const { data: referralStats } = useQuery({
+    queryKey: ["referralStats"],
+    queryFn: () => getReferralStats(),
+  });
+
   const isPro = planInfo
     ? effectiveTier(planInfo.plan, planInfo.trialEndsAt) === "pro"
     : false;
@@ -147,6 +153,7 @@ export default function SettingsPage() {
   const [pwError, setPwError] = useState("");
   const [pwSaved, setPwSaved] = useState(false);
   const [pwSaving, setPwSaving] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
 
   const userKey = user ? `${user.email}:${user.createdAt}` : null;
   if (user && userKey !== prevUserKey) {
@@ -265,7 +272,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="tabs">
-        {(["profile", "business", "booking", "branding", "account"] as Tab[]).map((t) => (
+        {(["profile", "business", "booking", "branding", "referrals", "account"] as Tab[]).map((t) => (
           <button key={t} className={`tab ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>
             {t === "business" ? "Business Page" : t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
@@ -573,6 +580,82 @@ export default function SettingsPage() {
               </div>
             </div>
           ))}
+
+        {/* REFERRALS TAB */}
+        {tab === "referrals" && (
+          <div className="form">
+            <div className="field">
+              <label className="label">Your referral link</label>
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                <input
+                  className="input"
+                  value={referralStats?.referralLink || ""}
+                  readOnly
+                  style={{ flex: 1, fontFamily: "monospace", fontSize: "0.875rem" }}
+                />
+                <button
+                  className="btn-copy"
+                  onClick={() => {
+                    if (referralStats?.referralLink) {
+                      navigator.clipboard.writeText(referralStats.referralLink);
+                      setReferralCopied(true);
+                      setTimeout(() => setReferralCopied(false), 2000);
+                    }
+                  }}
+                >
+                  {referralCopied ? "Copied!" : "Copy"}
+                </button>
+              </div>
+              <p className="hint">
+                Share this link with friends. When they sign up, you both get 1 month of free Pro.
+              </p>
+            </div>
+            <div className="field">
+              <label className="label">Share</label>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <button
+                  className="btn-whatsapp"
+                  onClick={() => {
+                    if (!referralStats?.referralLink) return;
+                    const text = `Join Zest using my link and we both get 1 month free Pro: ${referralStats.referralLink}`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+                  }}
+                >
+                  Share on WhatsApp
+                </button>
+                <button
+                  className="btn-copy"
+                  onClick={() => {
+                    if (!referralStats?.referralLink) return;
+                    const text = `Join Zest using my link and we both get 1 month free Pro: ${referralStats.referralLink}`;
+                    navigator.clipboard.writeText(text);
+                    setReferralCopied(true);
+                    setTimeout(() => setReferralCopied(false), 2000);
+                  }}
+                >
+                  Copy message
+                </button>
+              </div>
+            </div>
+            {referralStats && referralStats.referralCount > 0 && (
+              <div className="field">
+                <label className="label">Referrals</label>
+                <p className="hint" style={{ fontSize: "1rem", color: "var(--foreground)" }}>
+                  You&apos;ve referred <strong>{referralStats.referralCount}</strong> friend{referralStats.referralCount !== 1 ? "s" : ""}
+                </p>
+              </div>
+            )}
+            <div className="field">
+              <label className="label">How it works</label>
+              <div style={{ fontSize: "0.875rem", color: "var(--muted)", lineHeight: 1.6 }}>
+                <p style={{ margin: "0 0 0.5rem" }}>1. Share your referral link with friends</p>
+                <p style={{ margin: "0 0 0.5rem" }}>2. They sign up using your link</p>
+                <p style={{ margin: "0 0 0.5rem" }}>3. You both get 1 month of free Pro</p>
+                <p style={{ margin: 0 }}>There&apos;s no limit — refer as many friends as you want.</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ACCOUNT TAB */}
         {tab === "account" && (

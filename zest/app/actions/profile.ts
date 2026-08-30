@@ -15,6 +15,7 @@ export interface UserProfile {
   hideBranding: boolean;
   phone: string | null;
   slug: string;
+  referralCode: string | null;
 }
 
 export interface ProfileEventType {
@@ -65,6 +66,7 @@ export async function getUserProfile(profileSlug: string): Promise<{
       hideBranding: user.hideBranding,
       phone: user.phone,
       slug: user.slug,
+      referralCode: user.referralCode,
     },
     eventTypes,
   };

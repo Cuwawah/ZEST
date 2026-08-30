@@ -11,7 +11,8 @@ import {
   verifyResetToken,
 } from "@/lib/auth";
 import { sendMail, appUrl } from "@/lib/mail";
-import { trialEndsAtFor, generatePaymentAmountKobo } from "@/lib/plan";
+import { trialEndsAtFor, generatePaymentAmountKobo, TRIAL_DAYS } from "@/lib/plan";
+import { generateReferralCode, referralRewardMs, computeReferralTrialEnds } from "@/lib/referrals";
 
 function isAdminEmail(email: string): boolean {
   return email === (process.env.ADMIN_EMAIL || "cuwawah@gmail.com");
@@ -21,6 +22,7 @@ export async function signup(data: {
   name: string;
   email: string;
   password: string;
+  referralCode?: string;
 }): Promise<{ error?: string }> {
   const email = data.email.trim().toLowerCase();
   if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -67,6 +69,30 @@ export async function signup(data: {
     }
   }
 
+  let newReferralCode: string | null = null;
+  for (let i = 0; i < 10; i++) {
+    const candidate = generateReferralCode();
+    const taken = await prisma.user.findUnique({
+      where: { referralCode: candidate },
+      select: { id: true },
+    });
+    if (!taken) {
+      newReferralCode = candidate;
+      break;
+    }
+  }
+
+  let referredById: string | null = null;
+  if (data.referralCode) {
+    const referrer = await prisma.user.findUnique({
+      where: { referralCode: data.referralCode },
+      select: { id: true },
+    });
+    if (referrer) {
+      referredById = referrer.id;
+    }
+  }
+
   try {
     const user = await prisma.user.create({
       data: {
@@ -81,8 +107,36 @@ export async function signup(data: {
         timezone: "Africa/Lagos",
         bufferTime: 0,
         minNotice: 24,
+        referralCode: newReferralCode,
+        referredById,
       },
     });
+
+    if (referredById) {
+      const now = new Date();
+      const rewardMsVal = referralRewardMs();
+
+      const referrer = await prisma.user.findUnique({
+        where: { id: referredById },
+        select: { trialEndsAt: true },
+      });
+
+      const newTrialEnds = computeReferralTrialEnds(
+        referrer?.trialEndsAt,
+        rewardMsVal,
+        now
+      );
+
+      await prisma.user.update({
+        where: { id: referredById },
+        data: { trialEndsAt: newTrialEnds },
+      });
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { trialEndsAt: new Date(now.getTime() + rewardMsVal) },
+      });
+    }
 
     await createSession(user.id);
     return {};

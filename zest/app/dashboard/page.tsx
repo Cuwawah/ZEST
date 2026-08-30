@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useUpcomingBookings, useBooking, useCancelBooking } from "@/hooks/useBookings";
 import { useEventTypes } from "@/hooks/useEventTypes";
 import { getCurrentUserPlan } from "@/app/actions/admin";
+import { getReferralStats } from "@/app/actions/referrals";
 import { effectiveTier } from "@/lib/plan";
 
 export default function DashboardPage() {
@@ -16,6 +17,7 @@ export default function DashboardPage() {
   const [cancelId, setCancelId] = useState<string | null>(null);
   const [cancelling, setCancelling] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [referralCopied, setReferralCopied] = useState(false);
 
   const { data: planInfo } = useQuery({
     queryKey: ["currentUserPlan"],
@@ -27,6 +29,11 @@ export default function DashboardPage() {
     : "free";
   const isPro = tier === "pro";
   const creatorPhone = planInfo?.phone || null;
+
+  const { data: referralStats } = useQuery({
+    queryKey: ["referralStats"],
+    queryFn: () => getReferralStats(),
+  });
 
   const { booking: expandedBooking } = useBooking(expandedId ?? undefined);
 
@@ -76,6 +83,23 @@ export default function DashboardPage() {
     if (!eventTypes || eventTypes.length === 0) return;
     const link = `${window.location.origin}/book/${eventTypes[0].slug}`;
     const text = `Book a slot with me: ${link}`;
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener"
+    );
+  };
+
+  const handleCopyReferralLink = () => {
+    if (!referralStats?.referralLink) return;
+    navigator.clipboard.writeText(referralStats.referralLink);
+    setReferralCopied(true);
+    setTimeout(() => setReferralCopied(false), 2000);
+  };
+
+  const handleReferralWhatsappShare = () => {
+    if (!referralStats?.referralLink) return;
+    const text = `Join Zest using my link and we both get 1 month free Pro: ${referralStats.referralLink}`;
     window.open(
       `https://wa.me/?text=${encodeURIComponent(text)}`,
       "_blank",
@@ -158,6 +182,32 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {referralStats?.referralCode && (
+        <div className="referral-card">
+          <div className="referral-content">
+            <div className="referral-info">
+              <h3 className="referral-heading">Invite friends, earn free Pro</h3>
+              <p className="referral-text">
+                Get 1 month free Pro for each friend who signs up. They get 1 month free too.
+              </p>
+            </div>
+            <div className="referral-actions">
+              <button className="btn-referral-copy" onClick={handleCopyReferralLink}>
+                {referralCopied ? "Copied!" : "Copy referral link"}
+              </button>
+              <button className="btn-referral-whatsapp" onClick={handleReferralWhatsappShare}>
+                Share on WhatsApp
+              </button>
+            </div>
+          </div>
+          {referralStats.referralCount > 0 && (
+            <p className="referral-count">
+              You&apos;ve referred {referralStats.referralCount} friend{referralStats.referralCount !== 1 ? "s" : ""}
+            </p>
+          )}
+        </div>
+      )}
 
       {!bookings || bookings.length === 0 ? (
         <div className="empty">
@@ -760,6 +810,103 @@ export default function DashboardPage() {
         .guide-text {
           font-size: 0.875rem;
           color: var(--muted);
+        }
+
+        .referral-card {
+          background: linear-gradient(135deg, #fffbf0 0%, #fef3c7 100%);
+          border: 1.5px solid #f5c518;
+          border-radius: 0.75rem;
+          padding: 1.25rem 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .referral-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+
+        .referral-info {
+          min-width: 0;
+        }
+
+        .referral-heading {
+          font-size: 1rem;
+          font-weight: 700;
+          color: #1a1a0f;
+          margin: 0 0 0.25rem;
+        }
+
+        .referral-text {
+          font-size: 0.8125rem;
+          color: #7a7a60;
+          margin: 0;
+        }
+
+        .referral-actions {
+          display: flex;
+          gap: 0.5rem;
+          flex-shrink: 0;
+        }
+
+        .btn-referral-copy {
+          padding: 0.5rem 1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: #1a1a0f;
+          background: #f5c518;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: background 0.15s;
+          white-space: nowrap;
+        }
+
+        .btn-referral-copy:hover {
+          background: #e6b800;
+        }
+
+        .btn-referral-whatsapp {
+          padding: 0.5rem 1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: #fff;
+          background: #25d366;
+          border: none;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: filter 0.15s;
+          white-space: nowrap;
+        }
+
+        .btn-referral-whatsapp:hover {
+          filter: brightness(0.94);
+        }
+
+        .referral-count {
+          font-size: 0.75rem;
+          color: #7a7a60;
+          margin: 0.75rem 0 0;
+          padding-top: 0.75rem;
+          border-top: 1px solid rgba(245, 197, 24, 0.3);
+        }
+
+        @media (max-width: 600px) {
+          .referral-content {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .referral-actions {
+            justify-content: stretch;
+          }
+
+          .btn-referral-copy,
+          .btn-referral-whatsapp {
+            flex: 1;
+            text-align: center;
+          }
         }
       `}</style>
     </div>
