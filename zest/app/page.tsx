@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import DemoBookingWidget from "@/components/DemoBookingWidget";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -265,55 +266,11 @@ export default function Home() {
       {/* Demo */}
       <section id="demo" className="demo">
         <div className="container">
-          <h2 className="section-title">What your clients see</h2>
-          <p className="section-subtitle">Your logo, your colors, your questions. They pick a time in seconds.</p>
-
-          <div className="demo-window">
-            <div className="demo-frame">
-              <div className="demo-header">
-                <span className="demo-avatar">A</span>
-                <div>
-                  <div className="demo-business">Adaeze Okafor</div>
-                  <div className="demo-type">Photography Consultation</div>
-                </div>
-              </div>
-
-              <div className="demo-body">
-                <div className="demo-section-title">Select a time</div>
-                <div className="demo-days">
-                  <div className="demo-day active">
-                    <span>Mon</span><strong>18</strong>
-                  </div>
-                  <div className="demo-day">
-                    <span>Tue</span><strong>19</strong>
-                  </div>
-                  <div className="demo-day">
-                    <span>Wed</span><strong>20</strong>
-                  </div>
-                  <div className="demo-day">
-                    <span>Thu</span><strong>21</strong>
-                  </div>
-                </div>
-                <div className="demo-slots">
-                  <div className="demo-slot selected">9:00 AM</div>
-                  <div className="demo-slot">11:00 AM</div>
-                  <div className="demo-slot">2:00 PM</div>
-                  <div className="demo-slot">4:30 PM</div>
-                </div>
-                <div className="demo-btn">Continue</div>
-              </div>
-            </div>
-
-            <div className="demo-note">
-              <p>
-                One link, your logo and colors, no app for the client to
-                install. They pick a time, answer your questions, done.
-              </p>
-              <Link href="/signup" className="demo-cta">
-                See it on your own page →
-              </Link>
-            </div>
-          </div>
+          <h2 className="section-title">Try it yourself</h2>
+          <p className="section-subtitle">
+            This is exactly what your clients see. Pick a time, fill the form, done.
+          </p>
+          <DemoBookingWidget />
         </div>
       </section>
 
