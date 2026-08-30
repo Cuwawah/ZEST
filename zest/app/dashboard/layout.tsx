@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUserPlan, isAdmin } from "@/app/actions/admin";
@@ -45,6 +45,23 @@ export default function DashboardLayout({
     : null;
   const trialDays = planInfo ? daysLeft(planInfo.trialEndsAt) : 0;
   const paid = planInfo ? isPaid(planInfo.plan, planInfo.trialEndsAt) : false;
+
+  const [whatsappDismissed, setWhatsappDismissed] = useState(false);
+
+  useEffect(() => {
+    setWhatsappDismissed(localStorage.getItem("wa-banner-dismissed") === "1");
+  }, []);
+
+  const dismissWhatsapp = () => {
+    localStorage.setItem("wa-banner-dismissed", "1");
+    setWhatsappDismissed(true);
+  };
+
+  const showWhatsappBanner =
+    !whatsappDismissed &&
+    planInfo &&
+    !planInfo.phone &&
+    pathname !== "/dashboard/settings";
 
   const shareLink =
     eventTypes && eventTypes.length > 0
@@ -190,6 +207,25 @@ export default function DashboardLayout({
       {/* Main content */}
       <main className="main">
         <RenewalBanner planInfo={planInfo} />
+        {showWhatsappBanner && (
+          <div className="wa-banner">
+            <span>
+              Add your WhatsApp number so clients can confirm bookings with one
+              tap.
+            </span>
+            <div className="wa-banner-actions">
+              <Link href="/dashboard/settings" className="wa-banner-link">
+                Add now
+              </Link>
+              <button
+                className="wa-banner-dismiss"
+                onClick={dismissWhatsapp}
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
         {children}
       </main>
 
@@ -391,6 +427,57 @@ export default function DashboardLayout({
 
         .upgrade-link:hover {
           background: #e6b800;
+        }
+
+        .wa-banner {
+          margin: 0 0 24px;
+          padding: 14px 18px;
+          background: rgba(37, 211, 102, 0.08);
+          border: 1.5px solid rgba(37, 211, 102, 0.25);
+          border-radius: 12px;
+          font-size: 13.5px;
+          color: #3a3a28;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .wa-banner-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-shrink: 0;
+        }
+
+        .wa-banner-link {
+          background: #25d366;
+          color: white;
+          text-decoration: none;
+          padding: 6px 14px;
+          border-radius: 8px;
+          font-size: 12.5px;
+          font-weight: 600;
+          transition: background 0.15s;
+        }
+
+        .wa-banner-link:hover {
+          background: #1da851;
+        }
+
+        .wa-banner-dismiss {
+          background: none;
+          border: none;
+          color: #a0a080;
+          font-size: 12px;
+          font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
+          cursor: pointer;
+          padding: 4px;
+        }
+
+        .wa-banner-dismiss:hover {
+          color: #7a7a60;
         }
 
         .main {
