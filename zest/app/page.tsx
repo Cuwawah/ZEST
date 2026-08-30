@@ -352,6 +352,69 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Client Intelligence */}
+      <section className="intelligence-demo">
+        <div className="container">
+          <h2 className="section-title">Know who&apos;s coming back</h2>
+          <p className="section-subtitle">
+            Zest tracks your client patterns automatically — no spreadsheets
+            needed.
+          </p>
+
+          <div className="li-layout">
+            <div className="li-mockup">
+              <div className="li-card">
+                <div className="li-row">
+                  <span className="li-icon">📣</span>
+                  <div className="li-content">
+                    <span className="li-text">2 clients need follow-up</span>
+                    <span className="li-detail">No booking in 30+ days — reach out</span>
+                  </div>
+                </div>
+                <div className="li-row">
+                  <span className="li-icon">🔁</span>
+                  <div className="li-content">
+                    <span className="li-text">67% of your clients book again</span>
+                    <span className="li-detail">4 of 6 clients have booked more than once</span>
+                  </div>
+                </div>
+                <div className="li-row">
+                  <span className="li-icon">📅</span>
+                  <div className="li-content">
+                    <span className="li-text">Your busiest month is March</span>
+                    <span className="li-detail">40% of your bookings came then</span>
+                  </div>
+                </div>
+                <div className="li-row">
+                  <span className="li-icon">👥</span>
+                  <div className="li-content">
+                    <span className="li-text">5 returning clients, 3 first-timers</span>
+                    <span className="li-detail">Your clients keep coming back</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="li-note">
+              <h3 className="li-note-title">More than a booking tool</h3>
+              <p className="li-note-text">
+                Zest watches your booking patterns and tells you who needs
+                attention — before you even look.
+              </p>
+              <ul className="li-note-list">
+                <li>Follow-up prompts when clients go quiet</li>
+                <li>Rebooking rates so you know who&apos;s loyal</li>
+                <li>Frequency patterns — how often each client books</li>
+                <li>Seasonality insights — your busiest months</li>
+              </ul>
+              <Link href="/signup" className="li-cta">
+                Try it free →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Demo */}
       <section id="demo" className="demo">
         <div className="container">
