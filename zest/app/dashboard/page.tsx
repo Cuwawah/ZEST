@@ -8,6 +8,7 @@ import { useEventTypes } from "@/hooks/useEventTypes";
 import { getCurrentUserPlan } from "@/app/actions/admin";
 import { getReferralStats } from "@/app/actions/referrals";
 import { effectiveTier } from "@/lib/plan";
+import { usePracticeInsights } from "@/hooks/useIntelligence";
 
 export default function DashboardPage() {
   const { bookings, isLoading: bookingsLoading } = useUpcomingBookings();
@@ -36,6 +37,8 @@ export default function DashboardPage() {
     queryKey: ["referralStats"],
     queryFn: () => getReferralStats(),
   });
+
+  const { data: practiceInsights } = usePracticeInsights();
 
   const { booking: expandedBooking } = useBooking(expandedId ?? undefined);
 
@@ -208,6 +211,25 @@ export default function DashboardPage() {
               You&apos;ve referred {referralStats.referralCount} friend{referralStats.referralCount !== 1 ? "s" : ""}
             </p>
           )}
+        </div>
+      )}
+
+      {practiceInsights && practiceInsights.length > 0 && (
+        <div className="insights-section">
+          <h2 className="insights-heading">Insights</h2>
+          <div className="insights-list">
+            {practiceInsights.map((insight, i) => (
+              <div key={i} className="insight-row">
+                <span className="insight-icon">{insight.icon}</span>
+                <div className="insight-content">
+                  <span className="insight-text">{insight.text}</span>
+                  {insight.detail && (
+                    <span className="insight-detail">{insight.detail}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -1051,6 +1073,62 @@ export default function DashboardPage() {
 
         .btn-referral-whatsapp:hover {
           filter: brightness(0.94);
+        }
+
+        .insights-section {
+          margin-bottom: 1.5rem;
+        }
+
+        .insights-heading {
+          font-size: 1rem;
+          font-weight: 700;
+          color: var(--foreground);
+          margin: 0 0 0.75rem;
+        }
+
+        .insights-list {
+          background: var(--background);
+          border: 1px solid var(--border);
+          border-radius: 0.75rem;
+          overflow: hidden;
+        }
+
+        .insight-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+          padding: 0.75rem 1.25rem;
+          border-bottom: 1px solid var(--border);
+        }
+
+        .insight-row:last-child {
+          border-bottom: none;
+        }
+
+        .insight-icon {
+          font-size: 1rem;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+
+        .insight-content {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+        }
+
+        .insight-text {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: var(--foreground);
+          line-height: 1.4;
+        }
+
+        .insight-detail {
+          font-size: 0.8125rem;
+          color: var(--muted);
+          line-height: 1.4;
         }
 
         .referral-count {

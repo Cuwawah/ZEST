@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { getClientById } from "@/app/actions/clients";
 import { getTags, assignTag, removeTag } from "@/app/actions/tags";
+import { useClientInsights } from "@/hooks/useIntelligence";
 
 export default function ClientDetailPage() {
   const params = useParams();
@@ -23,6 +24,8 @@ export default function ClientDetailPage() {
     queryKey: ["tags"],
     queryFn: () => getTags(),
   });
+
+  const { data: insights } = useClientInsights(clientId);
 
   const assignTagMut = useMutation({
     mutationFn: (tagId: string) => assignTag(clientId, tagId),
@@ -163,6 +166,20 @@ export default function ClientDetailPage() {
           )}
         </div>
       </div>
+
+      {insights && insights.length > 0 && (
+        <div className="section">
+          <h2 className="section-heading">Insights</h2>
+          <div className="insights-list">
+            {insights.map((insight, i) => (
+              <div key={i} className="insight-row">
+                <span className="insight-icon">{insight.icon}</span>
+                <span className="insight-text">{insight.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="section">
         <h2 className="section-heading">Booking history</h2>
@@ -390,6 +407,37 @@ export default function ClientDetailPage() {
           font-size: 0.875rem;
           color: var(--muted);
           margin: 0;
+        }
+
+        .insights-list {
+          background: var(--background);
+          border: 1px solid var(--border);
+          border-radius: 0.75rem;
+          overflow: hidden;
+        }
+
+        .insight-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+          padding: 0.75rem 1.25rem;
+          border-bottom: 1px solid var(--border);
+          font-size: 0.875rem;
+          color: var(--foreground);
+        }
+
+        .insight-row:last-child {
+          border-bottom: none;
+        }
+
+        .insight-icon {
+          font-size: 1rem;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+
+        .insight-text {
+          line-height: 1.4;
         }
 
         .hint-link {
