@@ -2650,3 +2650,48 @@ body {
   background: #e6b800;
   transform: translateY(-1px);
 }
+
+.blog-page .inline-cta {
+  background: linear-gradient(135deg, #fffbf0 0%, #fef3c7 100%);
+  border: 1.5px solid #f5c518;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.blog-page .inline-cta-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a0f;
+  margin: 0;
+}
+
+.blog-page .inline-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f5c518;
+  color: #1a1a0f;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.blog-page .inline-cta-btn:hover {
+  background: #e6b800;
+}
+
+@media (max-width: 600px) {
+  .blog-page .inline-cta {
+    flex-direction: column;
+    text-align: center;
+  }
+}

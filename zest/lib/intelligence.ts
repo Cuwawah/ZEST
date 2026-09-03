@@ -13,7 +13,7 @@ export interface PracticeInsight {
   priority: number;
 }
 
-interface BookingData {
+export interface BookingData {
   startTime: Date;
   status: string;
   responses: Array<{
@@ -22,14 +22,14 @@ interface BookingData {
   }>;
 }
 
-interface ClientInput {
+export interface ClientInput {
   name: string | null;
   email: string;
   createdAt: Date;
   bookings: BookingData[];
 }
 
-interface PracticeInput {
+export interface PracticeInput {
   clients: Array<{
     id: string;
     name: string | null;
