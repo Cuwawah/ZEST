@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPost, getAllPosts } from "@/lib/blog";
+import { getPost, getAllPosts, type BlogCategory } from "@/lib/blog";
+
+const categoryLabels: Record<BlogCategory, string> = {
+  "founder-notes": "Founder Notes",
+  guides: "Guides",
+};
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,7 +44,12 @@ export default async function BlogPostPage({ params }: Props) {
         </Link>
 
         <article className="article">
-          <time className="post-date">{post.date}</time>
+          <div className="post-meta">
+            <span className={`category-badge category-${post.category}`}>
+              {categoryLabels[post.category]}
+            </span>
+            <time className="post-date">{post.date}</time>
+          </div>
           <h1 className="post-title">{post.title}</h1>
           <p className="post-author">By {post.author}</p>
 

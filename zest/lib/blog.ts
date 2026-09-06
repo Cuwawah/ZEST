@@ -4,12 +4,15 @@ import matter from "gray-matter";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
+export type BlogCategory = "founder-notes" | "guides";
+
 export interface BlogPost {
   slug: string;
   title: string;
   description: string;
   date: string;
   author: string;
+  category: BlogCategory;
   content: string;
 }
 
@@ -28,6 +31,7 @@ export function getAllPosts(): Omit<BlogPost, "content">[] {
         description: data.description || "",
         date: data.date || "",
         author: data.author || "Zest Team",
+        category: data.category || "guides",
       };
     })
     .sort((a, b) => (a.date > b.date ? -1 : 1));
@@ -46,6 +50,7 @@ export function getPost(slug: string): BlogPost | null {
     description: data.description || "",
     date: data.date || "",
     author: data.author || "Zest Team",
+    category: data.category || "guides",
     content,
   };
 }

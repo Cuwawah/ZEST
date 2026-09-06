@@ -2498,7 +2498,62 @@ body {
 .blog-page .subtitle {
   font-size: 16px;
   color: #7a7a60;
-  margin: 0 0 2.5rem;
+  margin: 0 0 1.5rem;
+}
+
+.blog-page .blog-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 2rem;
+  border-bottom: 1.5px solid #e8e4cc;
+}
+
+.blog-page .blog-tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #7a7a60;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.blog-page .blog-tab:hover {
+  color: #1a1a0f;
+}
+
+.blog-page .blog-tab.active {
+  color: #1a1a0f;
+  border-bottom-color: #f5c518;
+}
+
+.blog-page .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.blog-page .category-badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.blog-page .category-founder-notes {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.blog-page .category-guides {
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .blog-page .empty {
