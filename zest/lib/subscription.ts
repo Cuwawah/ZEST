@@ -195,7 +195,7 @@ export async function runRenewalSweep(now: Date = new Date()): Promise<{
         counts.expired++;
         await prisma.user.update({
           where: { id: user.id },
-          data: { plan: "inactive" },
+          data: { plan: "free", trialEndsAt: null },
         });
       } else if (action.type === "renew_expired") {
         sentKeys.add("renew_expired");
@@ -266,9 +266,9 @@ ${billingLink(user)}
 }
 
 function renewExpiredEmail(user: RenewalCandidate): string {
-  return `${baseEmail(user)}Your Zest Pro subscription has expired, so your account has been placed on hold — you can no longer accept bookings.
+  return `${baseEmail(user)}Your Zest Pro subscription has expired. You're now on the free plan (1 event type) — you can still use Zest and accept bookings.
 
-Renew to reactivate instantly:
+Renew to get unlimited event types and WhatsApp notify back:
 ${billingLink(user)}
 
 — The Zest team`;

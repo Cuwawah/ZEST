@@ -123,7 +123,16 @@ export async function getPendingUsers() {
   await requireAdmin();
 
   return prisma.user.findMany({
-    where: { plan: "inactive", NOT: { trialEndsAt: { gt: new Date() } } },
+    where: {
+      OR: [
+        { plan: "inactive", NOT: { trialEndsAt: { gt: new Date() } } },
+        {
+          plan: "free",
+          planExpiresAt: { not: null },
+          NOT: { trialEndsAt: { gt: new Date() } },
+        },
+      ],
+    },
     orderBy: { createdAt: "asc" },
     select: {
       id: true,
