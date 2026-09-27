@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
 import { pollOnce, kudaEnabled } from "@/lib/kuda/poller";
+import { checkCronAuth } from "@/lib/cronAuth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  if (!kudaEnabled()) {
-    return NextResponse.json({ error: "kuda not enabled" }, { status: 400 });
+  const auth = checkCronAuth(request.headers);
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
 
-  const isVercelCron = request.headers.get("x-vercel-cron") === "1";
-  const secret = process.env.KUDA_POLL_SECRET;
-  if (secret && !isVercelCron) {
-    const provided = request.headers.get("x-kuda-secret");
-    if (provided !== secret) {
-      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-    }
+  if (!kudaEnabled()) {
+    return NextResponse.json({ error: "kuda not enabled" }, { status: 400 });
   }
 
   try {

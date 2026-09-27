@@ -90,43 +90,29 @@ export default function ProfileClient({
   profileSlug: string;
   initialData: ProfileData;
 }) {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["profile", profileSlug],
     queryFn: () => getUserProfile(profileSlug),
     initialData,
   });
 
-  if (isLoading) {
-    return (
-      <div className="profile-page">
-        <div className="profile-loading">Loading...</div>
-        <style jsx>{`
-          .profile-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #fffbf0; }
-          .profile-loading { color: #7a7a60; font-size: 15px; }
-        `}</style>
-      </div>
-    );
-  }
-
+  // The server has already resolved this profile and renders notFound()
+  // otherwise, so data is seeded from initialData and never empty on the
+  // first paint. A background refetch can still return null if the owner's
+  // Pro plan lapses while the page is open, so handle it rather than
+  // dereferencing a null profile.
   if (!data) {
     return (
       <div className="profile-page">
         <div className="profile-container">
-          <div className="not-found">
-            <span className="not-found-icon">�㓟</span>
-            <h1>Business page not found</h1>
-            <p>This business page doesn&apos;t exist or is no longer active.</p>
-            <Link href="/" className="home-link">Go to Zest</Link>
-          </div>
+          <p className="profile-gone">
+            This business page is no longer available.
+          </p>
         </div>
         <style jsx>{`
           .profile-page { min-height: 100vh; background: #fffbf0; display: flex; align-items: center; justify-content: center; }
           .profile-container { max-width: 600px; margin: 0 auto; padding: 40px 24px; text-align: center; }
-          .not-found-icon { font-size: 48px; display: block; margin-bottom: 16px; }
-          .not-found h1 { font-family: var(--font-fraunces, 'Fraunces'), serif; font-size: 28px; color: #1a1a0f; margin: 0 0 12px; }
-          .not-found p { color: #7a7a60; margin: 0 0 24px; font-size: 15px; }
-          .home-link { display: inline-block; background: #f5c518; color: #1a1a0f; text-decoration: none; padding: 12px 24px; border-radius: 12px; font-weight: 500; transition: all 0.15s; }
-          .home-link:hover { background: #e6b800; transform: translateY(-1px); }
+          .profile-gone { color: #7a7a60; font-size: 15px; margin: 0; }
         `}</style>
       </div>
     );
