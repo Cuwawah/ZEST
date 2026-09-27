@@ -20,7 +20,18 @@ export default function DashboardPage() {
   const [copied, setCopied] = useState(false);
   const [referralCopied, setReferralCopied] = useState(false);
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
+  const [notesDraft, setNotesDraft] = useState("");
   const updateNotes = useUpdateBookingNotes();
+
+  const openNotesEditor = (bookingId: string) => {
+    setNotesDraft(expandedBooking?.notes || "");
+    setEditingNotes(bookingId);
+  };
+
+  const closeNotesEditor = () => {
+    setNotesDraft("");
+    setEditingNotes(null);
+  };
 
   const { data: planInfo } = useQuery({
     queryKey: ["currentUserPlan"],
@@ -367,8 +378,8 @@ export default function DashboardPage() {
                             <div className="notes-edit">
                               <textarea
                                 className="notes-textarea"
-                                value={expandedBooking?.notes || ""}
-                                onChange={(e) => {}}
+                                value={notesDraft}
+                                onChange={(e) => setNotesDraft(e.target.value)}
                                 placeholder="Add notes about this client or session..."
                                 rows={3}
                                 autoFocus
@@ -377,18 +388,18 @@ export default function DashboardPage() {
                                 <button
                                   className="btn-save-notes"
                                   onClick={() => {
-                                    const textarea = document.querySelector(".notes-textarea") as HTMLTextAreaElement;
-                                    if (textarea && expandedBooking) {
-                                      updateNotes({ id: booking.id, notes: textarea.value });
-                                      setEditingNotes(null);
-                                    }
+                                    updateNotes({
+                                      id: booking.id,
+                                      notes: notesDraft,
+                                    });
+                                    closeNotesEditor();
                                   }}
                                 >
                                   Save
                                 </button>
                                 <button
                                   className="btn-cancel-notes"
-                                  onClick={() => setEditingNotes(null)}
+                                  onClick={closeNotesEditor}
                                 >
                                   Cancel
                                 </button>
@@ -397,7 +408,7 @@ export default function DashboardPage() {
                           ) : (
                             <div
                               className="notes-display"
-                              onClick={() => setEditingNotes(booking.id)}
+                              onClick={() => openNotesEditor(booking.id)}
                             >
                               {expandedBooking?.notes || (
                                 <span className="notes-placeholder">Click to add notes...</span>
@@ -425,12 +436,12 @@ export default function DashboardPage() {
                                 Notify on WhatsApp
                               </button>
                             ) : booking.phone && !isPro ? (
-                              <a
+                              <Link
                                 href="/dashboard/billing"
                                 className="btn-lock"
                               >
                                 🔒 Notify on WhatsApp
-                              </a>
+                              </Link>
                             ) : null}
                             <button
                               className="btn-cancel"

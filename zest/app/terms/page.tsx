@@ -10,7 +10,7 @@ export default function TermsPage() {
       </Link>
       <h1>Terms of Service</h1>
       <div className="content">
-        <p>Last updated: August 2026</p>
+        <p>Last updated: September 2026</p>
 
         <h2>1. Your use of Zest</h2>
         <p>
@@ -36,11 +36,47 @@ export default function TermsPage() {
           data.
         </p>
 
-        <h2>4. Acceptable use</h2>
+        <h2>4. Sensitive information and client data</h2>
         <p>
-          You may not use Zest to collect sensitive categories of personal data
-          or to engage in any unlawful activity. We may suspend accounts that
-          violate these terms.
+          Zest is built to help you collect information from your own clients,
+          and that information may include sensitive personal data — for example
+          health, counselling, or therapy information. Collecting it through
+          Zest is permitted, subject to the following.
+        </p>
+        <p>
+          Where you collect such information, you are the controller of that
+          data. You must:
+        </p>
+        <ul>
+          <li>
+            have a lawful basis for collecting it under applicable law,
+            including the Nigeria Data Protection Act and any rules that apply to
+            sensitive data;
+          </li>
+          <li>
+            tell your clients what you collect and why, and obtain their
+            consent;
+          </li>
+          <li>
+            configure your intake questions so you only ask for what you need to
+            run your sessions;
+          </li>
+          <li>
+            keep the information secure and handle it in line with your
+            professional, ethical, and legal obligations, including any duties
+            of confidentiality you owe your clients.
+          </li>
+        </ul>
+        <p>
+          We store this data on your behalf to power your booking dashboard. We
+          do not use it to build advertising profiles, we do not share it with
+          third parties for their own purposes, and we do not use it to train
+          machine learning models.
+        </p>
+        <p>
+          You may not use Zest to engage in unlawful activity. We may suspend
+          accounts where we reasonably believe data is being collected
+          unlawfully, or where we are directed to do so by a competent authority.
         </p>
 
         <h2>5. Limitation of liability</h2>
@@ -81,6 +117,15 @@ export default function TermsPage() {
         .content p {
           color: #3a3a28;
           line-height: 1.7;
+        }
+        .content ul {
+          color: #3a3a28;
+          line-height: 1.7;
+          padding-left: 1.25rem;
+          margin: 0.75rem 0;
+        }
+        .content li {
+          margin-bottom: 0.5rem;
         }
         .content h2 {
           font-family: "Fraunces", serif;

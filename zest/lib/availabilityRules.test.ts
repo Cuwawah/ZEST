@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { matchesRule } from "./availabilityRules";
+import { matchesRule, WEEKDAYS, WEEKDAYS_FULL } from "./availabilityRules";
 
 function rule(type: string, extra: Record<string, unknown> = {}) {
   return { type, ...extra } as Parameters<typeof matchesRule>[0];
@@ -128,6 +128,42 @@ function test() {
       matchesRule(rule("unknown"), thu.dateStr, thu.dayOfWeek, thu.dayNum),
       false
     );
+  });
+
+  ok("WEEKDAYS index equals Date.getUTCDay for all seven days", () => {
+    for (let offset = 0; offset < 21; offset += 1) {
+      const date = new Date(Date.UTC(2026, 8, 20 + offset));
+      assert.strictEqual(
+        WEEKDAYS[date.getUTCDay()],
+        date.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }),
+        `mismatch on ${date.toISOString().slice(0, 10)}`
+      );
+    }
+  });
+
+  ok("WEEKDAYS_FULL aligns with WEEKDAYS", () => {
+    assert.strictEqual(WEEKDAYS.length, 7);
+    assert.strictEqual(WEEKDAYS_FULL.length, 7);
+    for (let i = 0; i < 7; i += 1) {
+      assert.strictEqual(WEEKDAYS_FULL[i].slice(0, 3), WEEKDAYS[i]);
+    }
+  });
+
+  ok("a Monday-first UI index would be off by one from the engine", () => {
+    const mon = { dateStr: "2026-08-24", dayOfWeek: 1, dayNum: 24 };
+    assert.strictEqual(
+      matchesRule(rule("weekly", { dayOfWeek: WEEKDAYS.indexOf("Mon") }), mon.dateStr, mon.dayOfWeek, mon.dayNum),
+      true
+    );
+    assert.strictEqual(
+      matchesRule(rule("weekly", { dayOfWeek: 0 }), mon.dateStr, mon.dayOfWeek, mon.dayNum),
+      false
+    );
+  });
+
+  ok("default selected days 1-5 resolve to Monday through Friday", () => {
+    const expected = [1, 2, 3, 4, 5].map((d) => WEEKDAYS[d]);
+    assert.deepStrictEqual(expected, ["Mon", "Tue", "Wed", "Thu", "Fri"]);
   });
 
   console.log("availability-rules self-test complete");

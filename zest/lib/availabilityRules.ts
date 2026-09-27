@@ -6,6 +6,26 @@ export interface AvailabilityRuleInput {
   dayOfMonth?: number | null;
 }
 
+export const WEEKDAYS = [
+  "Sun",
+  "Mon",
+  "Tue",
+  "Wed",
+  "Thu",
+  "Fri",
+  "Sat",
+] as const;
+
+export const WEEKDAYS_FULL = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const;
+
 const REFERENCE_EPOCH = Date.UTC(2026, 0, 1);
 const DAY_MS = 24 * 60 * 60 * 1000;
 

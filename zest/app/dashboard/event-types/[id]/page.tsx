@@ -8,6 +8,7 @@ import { getEventTypeById } from "@/app/actions/eventTypes";
 import { getAvailability } from "@/app/actions/availability";
 import { getQuestions } from "@/app/actions/intakeQuestions";
 import { useEventTypes } from "@/hooks/useEventTypes";
+import { WEEKDAYS, WEEKDAYS_FULL } from "@/lib/availabilityRules";
 
 type QuestionType = "text" | "multiple_choice" | "dropdown";
 
@@ -20,8 +21,8 @@ interface Question {
 }
 
 const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const DAY_FULL = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = WEEKDAYS;
+const DAY_FULL = WEEKDAYS_FULL;
 
 function generateId() {
   return Math.random().toString(36).slice(2, 9);
@@ -113,12 +114,20 @@ export default function EditEventTypePage() {
   const [prevAvailabilityKey, setPrevAvailabilityKey] = useState<string | null>(null);
   if (availabilityRules && availabilityRules.length > 0 && prevAvailabilityKey !== eventTypeId) {
     setPrevAvailabilityKey(eventTypeId);
-    const weeklyRule = availabilityRules.find(r => r.type === "weekly");
-    if (weeklyRule) {
-      setSelectedDays(weeklyRule.dayOfWeek !== null ? [weeklyRule.dayOfWeek] : []);
-      setStartTime(weeklyRule.startTime);
-      setEndTime(weeklyRule.endTime);
-      setEveryNDays(weeklyRule.everyNDays || 1);
+    const weeklyRules = availabilityRules.filter(r => r.type === "weekly");
+    if (weeklyRules.length > 0) {
+      const first = weeklyRules[0];
+      const days = Array.from(
+        new Set(
+          weeklyRules
+            .map((r) => r.dayOfWeek)
+            .filter((d): d is number => typeof d === "number")
+        )
+      ).sort((a, b) => a - b);
+      setSelectedDays(days);
+      setStartTime(first.startTime);
+      setEndTime(first.endTime);
+      setEveryNDays(first.everyNDays || 1);
     }
   }
 
@@ -253,7 +262,7 @@ export default function EditEventTypePage() {
       <div className="header">
         <div className="header-left">
           <h1 className="heading">{name || "Untitled"}</h1>
-          <p className="subheading">zestbook.com/book/{slugPreview}</p>
+          <p className="subheading">zestbook.org.ng/book/{slugPreview}</p>
         </div>
         <div className="header-right">
           <div className={`status-badge ${active ? "status-active" : "status-inactive"}`}>

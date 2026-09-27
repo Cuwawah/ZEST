@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEventTypes } from "@/hooks/useEventTypes";
 import { getCurrentUserPlan } from "@/app/actions/admin";
 import { effectiveTier, FREE_EVENT_TYPES_LIMIT } from "@/lib/plan";
+import { WEEKDAYS, WEEKDAYS_FULL } from "@/lib/availabilityRules";
 
 type QuestionType = "text" | "multiple_choice" | "dropdown";
 
@@ -19,8 +20,8 @@ interface Question {
 }
 
 const DURATION_OPTIONS = [15, 30, 45, 60, 90, 120];
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const DAY_FULL = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = WEEKDAYS;
+const DAY_FULL = WEEKDAYS_FULL;
 
 function generateId() {
   return Math.random().toString(36).slice(2, 9);
@@ -224,7 +225,7 @@ export default function NewEventTypePage() {
               />
               {name && (
                 <p className="hint">
-                  Booking link: <span className="hint-slug">zestbook.com/book/{slugPreview || "..."}</span>
+                  Booking link: <span className="hint-slug">zestbook.org.ng/book/{slugPreview || "..."}</span>
                 </p>
               )}
             </div>
