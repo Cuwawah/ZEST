@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx lib/kuda/parser.test.ts && tsx lib/kuda/matcher.test.ts && tsx lib/plan.test.ts && tsx lib/subscription.test.ts && tsx lib/bookingTokens.test.ts && tsx lib/availabilityRules.test.ts && tsx lib/capacity.test.ts && tsx lib/reminders.test.ts && tsx lib/referrals.test.ts",
+    "test": "tsx lib/markdown.test.ts && tsx lib/kuda/parser.test.ts && tsx lib/kuda/matcher.test.ts && tsx lib/plan.test.ts && tsx lib/subscription.test.ts && tsx lib/bookingTokens.test.ts && tsx lib/availabilityRules.test.ts && tsx lib/capacity.test.ts && tsx lib/reminders.test.ts && tsx lib/referrals.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "imapflow": "^1.6.6",
     "jose": "^6.2.8",
     "mailparser": "^3.9.15",
+    "marked": "^16.4.2",
     "next": "16.1.6",
     "nodemailer": "^9.0.5",
     "react": "19.2.3",

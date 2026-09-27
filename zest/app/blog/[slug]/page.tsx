@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPost, getAllPosts, type BlogCategory } from "@/lib/blog";
+import { renderPost } from "@/lib/markdown";
 
 const categoryLabels: Record<BlogCategory, string> = {
   "founder-notes": "Founder Notes",
@@ -55,7 +56,7 @@ export default async function BlogPostPage({ params }: Props) {
 
           <div
             className="post-content"
-            dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
+            dangerouslySetInnerHTML={{ __html: renderPost(post.content) }}
           />
         </article>
 
@@ -71,28 +72,4 @@ export default async function BlogPostPage({ params }: Props) {
       </div>
     </div>
   );
-}
-
-function markdownToHtml(md: string): string {
-  let h2Count = 0;
-  return md
-    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-    .replace(/^## (.+)$/gm, (_, text) => {
-      h2Count++;
-      if (h2Count === 2) {
-        return `<h2>${text}</h2><div class="inline-cta"><p class="inline-cta-text">Set up your free booking link in 2 minutes — no card needed.</p><a href="/signup" class="inline-cta-btn">Get started free →</a></div>`;
-      }
-      return `<h2>${text}</h2>`;
-    })
-    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>")
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    .replace(/^- (.+)$/gm, "<li>$1</li>")
-    .replace(/(<li>.*<\/li>\n?)+/g, (m) => `<ul>${m}</ul>`)
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/^(.+)$/gm, (m) => {
-      if (m.startsWith("<")) return m;
-      return `<p>${m}</p>`;
-    });
 }
