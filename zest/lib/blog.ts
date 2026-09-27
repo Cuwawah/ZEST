@@ -16,6 +16,21 @@ export interface BlogPost {
   content: string;
 }
 
+function toTime(date: string): number {
+  const t = new Date(date).getTime();
+  return Number.isNaN(t) ? 0 : t;
+}
+
+// Dates are authored as "September 8, 2026". A plain string comparison sorts
+// those wrong once the day reaches two digits ("September 15" sorts below
+// "September 8"), so compare parsed timestamps.
+export function compareByDateDesc(
+  a: { date: string },
+  b: { date: string }
+): number {
+  return toTime(b.date) - toTime(a.date);
+}
+
 export function getAllPosts(): Omit<BlogPost, "content">[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
 
@@ -34,7 +49,7 @@ export function getAllPosts(): Omit<BlogPost, "content">[] {
         category: data.category || "guides",
       };
     })
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
+    .sort(compareByDateDesc);
 }
 
 export function getPost(slug: string): BlogPost | null {
