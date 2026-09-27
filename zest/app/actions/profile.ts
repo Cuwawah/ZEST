@@ -77,10 +77,11 @@ export async function getAllProfileSlugs(): Promise<string[]> {
     where: {
       profileSlug: { not: null },
     },
-    select: { profileSlug: true },
+    select: { profileSlug: true, plan: true, trialEndsAt: true },
   });
 
   return users
+    .filter((u) => effectiveTier(u.plan, u.trialEndsAt) === "pro")
     .map((u) => u.profileSlug)
     .filter((s): s is string => s !== null);
 }
