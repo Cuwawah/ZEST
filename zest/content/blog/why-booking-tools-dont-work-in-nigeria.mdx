@@ -6,81 +6,77 @@ date: "September 5, 2026"
 author: "Craig Uwawah"
 ---
 
-Every week, thousands of Nigerian coaches, tutors, therapists, and photographers lose hours to the same conversation:
+There's a comfortable explanation for why booking software built in San Francisco doesn't land in Lagos. The tools are good. The market just needs a localised version — put a naira price on it, wire up a Nigerian payment gateway, translate the interface, ship.
 
-*"Are you available on Thursday?"*
-*"Thursday morning works, what time?"*
-*"Can you do 4pm instead?"*
-*"Let me check..."*
+I assumed that was the shape of the problem when I started Zest. I think it was wrong, not merely incomplete.
 
-This happens 20 times a week for a busy service provider. That's 20 times they could have lost a client to someone who replied faster. The problem isn't that scheduling is hard. The problem is that the tools built to fix this were made for a different kind of market.
+The localisation story assumes these tools fail at the edges. They don't. They fail in the middle, at the specific moment they were built around.
 
-## Why imported tools don't work here
+I'm writing this because I started a company on the assumption that it was the first problem, and being wrong about that is more useful to other builders than being right about currency formatting.
 
-Calendly, Acuity, Square Appointments — good products. But they were built for places where:
+**On data:** I cannot tell you what share of Nigerian service businesses lose clients to a slow reply, and I haven't measured whether client-tracking actually changes anyone's behaviour. What follows is a pattern I see in the conversations I have, plus an argument about the tools themselves — which is weaker evidence than a study, and I'd rather flag that than imply otherwise.
 
-- Clients pay with credit cards
-- Communication happens over email
-- Most bookings are cold — the client found you online and doesn't know you yet
-- The payment is the relationship
+## The tools are built around the moment
 
-That's not how Nigerian service businesses work. Here's the reality:
+Almost every scheduling product is organised around one instant: the moment a client picks a slot. Availability grids, timezones, buffer times, confirmations. That thirty-second interaction *is* the product.
 
-- **WhatsApp is where business happens.** Not email. Not SMS. WhatsApp. Every conversation with a client starts and ends there.
-- **Bank transfer is how people pay.** Most clients don't have credit cards. They open their banking app, send the money, and maybe send you a screenshot. That's it.
-- **Repeat clients are the business.** The first booking is the easy part. The real money is in the second, third, tenth booking — the parent who books tutoring every term, the couple who comes back for photos each year, the client who renews coaching every quarter.
+For a Nigerian service provider, thirty seconds is the easy part. It has been solved for a decade, and solving it is not where the difficulty lives.
 
-Calendly handles scheduling. It doesn't handle the fact that your best client hasn't booked in 6 weeks and you should probably reach out. It doesn't handle the fact that 67% of your clients never come back, and you don't know why. It doesn't handle the fact that your client paid by transfer and you need to figure out who sent that money.
+The business lives on either side of it. Before: has this person booked before, what did they tell me last time, what should I ask before they arrive. After: did they come back, when, are they drifting.
 
-These are different problems. Not missing features — different problems.
+Calendly has no opinion about any of that — and not because the team was careless. Because the data model has nowhere to put the answer. There is no field for "how many times has this person been", because Calendly isn't a relationship. It's a calendar with a signup flow attached.
 
-## The booking moment vs. the whole relationship
+## The strongest objection
 
-Here's what I keep thinking about: most booking tools care about the **moment** — the 30 seconds where a client picks a time. But the business isn't the moment. It's what comes before and after.
+The obvious objection is that this is over-engineering. Add WhatsApp, add a transfer reference, ship it.
 
-Before: Has this client booked before? What did they tell me last time? What should I ask before we meet?
+That objection is correct about the features and completely wrong about the problem. A WhatsApp button and a transfer reference are integrations. They make the thirty-second moment slightly nicer. They do nothing whatsoever about the question the provider is actually asking, which is: who is coming back, and who is quietly disappearing?
 
-After: Did they come back? When was the last time? Are they drifting away?
-
-No scheduling tool deals with this. They're all built around the calendar — available slots, booked slots, buffer times. That's fine, but it's the least interesting part of the problem.
+You can bolt a payment method onto a calendar in an afternoon. You cannot bolt a relationship onto it, because there is nowhere to keep one.
 
 ## What I mean by "client memory"
 
-I've been thinking about this as **client memory** — the idea that your booking system should know who your clients are, not just when they're free.
+I've started calling the thing I want to build **client memory**. It's a plain idea: the booking system should know who your clients are, not just when they're free.
 
-A scheduling tool remembers time. Client memory remembers:
+Client memory isn't sentiment analysis. It's five questions a calendar cannot answer today:
 
-- That Adaeze has booked 7 times and is your most loyal client
-- That Chukwuemeka hasn't booked in 45 days and you should reach out
-- That every parent who asks about JAMB prep also asks about pricing first
-- That your busiest month is September and you should open more slots
-- That 3 of your last 5 new clients never came back — maybe something in your process is pushing them away
+- How many times has this person booked, and when was the last one?
+- Who booked three months ago and hasn't returned since?
+- What did they say they needed before they arrived?
+- Which of my recent new clients never came back a second time?
+- When should I reach out, and what should I actually say?
 
-This is what actually grows a service business. Not a prettier calendar. Not another notification. Knowing who matters and when to do something about it.
+None of these are about the booking. They're about the person who made it. A calendar can answer the first one badly, and the rest not at all.
 
-## What I'm building
+<!-- cta -->
 
-I started building Zest because I couldn't find a tool that worked like Nigerian service businesses actually work. Not another Calendly with a Nigerian flag on it — something built from the ground up for bank transfers, WhatsApp, and repeat clients.
+## The specifics that aren't really about Nigeria
 
-It's a booking platform, but the useful part isn't the scheduling. It's that it tracks who comes back, who's drifting, and what changed between visits. It includes intake forms on every plan — so you know what a client needs before they arrive. It handles bank transfers and activates your account automatically. It works with WhatsApp because that's where your clients already are.
+It is tempting to file all of this under "localisation", and the payment layer genuinely belongs there. Bank transfer is the method, the transfer narration is the matching problem, WhatsApp is the channel. Those are real problems and they're worth solving properly.
 
-I'm not trying to build Calendly for Africa. I'm trying to build the tool I wished existed when I watched service providers in Lagos lose clients because a WhatsApp reply took too long.
+But underneath them sits one structural fact: **the repeat client is the business.** The first booking is cheap and easy. The value is in the second, the third, the tenth — the parent who books every term, the couple who returns each year, the client who renews quarterly.
+
+A transaction tool optimises for transactions. If your income comes from transactions, that is correct behaviour. If your income comes from relationships, then a tool with no memory of relationships is optimising the wrong quantity — in every market.
+
+Which is why I don't think this is really a Lagos problem. It is a problem for any business that earns from retention. It is unusually visible here because the payment layer broke first, which made everyone assume the whole stack was broken.
 
 ## What this isn't
 
-I'll be honest: this isn't for everyone. If you run a high-volume business — a salon chain with 50 stylists and walk-in clients — Zest isn't for you. It's for the individual provider or small practice doing 10 to 50 bookings a month, where each client matters and losing one person to a slow reply actually hurts.
+This is not a case against Calendly, Acuity, or Square Appointments. If you run a drop-in clinic or a studio that takes walk-ins, they are good tools and you should use them. The honest answer is that the choice depends on whether you sell appointments or relationships — [I compared the options more directly here](/blog/best-scheduling-software-nigeria).
 
-And the client tracking is still early. It watches patterns and tells you what's happening, but it's not a full CRM. It won't send automated marketing emails or build sales funnels. It does one thing: helps you understand your clients so you can serve them better. If that's what you need, it works. If you need a do-everything tool, there are better options.
+It is also not a claim that the client tracking is finished. It isn't. Zest watches booking patterns and tells you what is changing. It is not a CRM, it does not send marketing email, and it will not build you a funnel. It attempts one thing: telling you who matters and when to do something about it.
+
+And the real limitation — I don't yet know whether providers change their behaviour when they see that information. Noticing a pattern and acting on it are two different problems, and I have only solved the first. [The scheduling half of this is something I wrote about separately](/blog/the-whatsapp-trap).
 
 ## The bigger picture
 
-I think there's a whole category of software that was brought into African markets without being rebuilt for how those markets actually work. Booking tools are one example. Invoicing, client management, payments — there's a long list of tools that work great in San Francisco and fall apart in Lagos. Not because the engineering is bad, but because the assumptions are wrong.
+There is a long list of software that arrived in African markets without being rebuilt for how those markets work. Invoicing, payments, client management. The pattern is consistent enough to be worth naming: the engineering is usually fine and the assumptions are wrong.
 
-The assumption that clients pay with cards. The assumption that email is the main channel. The assumption that every booking is a cold transaction. The assumption that the job is done once the slot is booked.
+The assumptions are almost always the same four. That people pay by card. That email is the channel. That every booking is a cold transaction. That the job is finished when the slot is in the calendar.
 
-I don't think the answer is "build Calendly but African." I think the answer is start from the relationship — the WhatsApp thread, the bank transfer, the client who's been with you for two years — and build from there.
+I don't think the answer is "build Calendly, but African." I think it's to start from the relationship — the WhatsApp thread, the transfer, the person who has been coming back for two years — and build outward from there.
 
-That's what I'm trying to do with Zest. Not a scheduling tool. A way to remember your clients.
+That is what Zest is an attempt at. Not a scheduling tool. A way to remember your clients.
 
 ---
 
