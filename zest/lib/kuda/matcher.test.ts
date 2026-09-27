@@ -1,5 +1,7 @@
-import { matchAgainstCandidates } from "./matcher";
+import { matchAgainstCandidates } from "./match";
 import type { ParsedKudaEmail } from "./parser";
+
+delete process.env.KUDA_EXPECTED_AMOUNT_KOBO;
 
 function assert(cond: boolean, msg: string) {
   if (!cond) {
@@ -54,7 +56,7 @@ assert(m1.status === "matched", "unique amount matches");
 assert(m1.matchedUserId === "u2", "unique amount picks right user");
 assert(m1.reason === "unique_amount_match", "unique amount reason");
 
-// Flat 3,500 with no narration and pending users -> manual review
+// Flat 4,000 with no narration and pending users -> manual review
 const m2 = matchAgainstCandidates(email({ amountKobo: 400000 }), candidates);
 assert(m2.status === "manual_review", "flat amount -> manual review");
 assert(m2.reason === "amount_matches_no_reference", "flat amount reason");
@@ -127,5 +129,15 @@ const m10 = matchAgainstCandidates(
 );
 assert(m10.status === "unmatched", "null unique amount not matched by amount");
 assert(m10.reason === "amount_does_not_match_expected", "null unique amount reason");
+
+// Explicit env override is honoured rather than silently inherited
+process.env.KUDA_EXPECTED_AMOUNT_KOBO = "99999";
+const m11 = matchAgainstCandidates(
+  email({ amountKobo: 99999 }),
+  candidates
+);
+assert(m11.status === "manual_review", "env override changes expected amount");
+assert(m11.reason === "amount_matches_no_reference", "env override reason");
+delete process.env.KUDA_EXPECTED_AMOUNT_KOBO;
 
 console.log("matcher self-test complete.");
